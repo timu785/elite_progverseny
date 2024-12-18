@@ -1,13 +1,11 @@
 import met
 
 infinitefuelmode:bool=False
+if(infinitefuelmode == True):
+        met.fuel = 1000
 
 met.status()
-for i in range(100):
-
-    if(infinitefuelmode == True):
-        met.fuel = 1000
-    
+for i in range(100):   
     inputtext:str=str(input("input: "))
     if(inputtext == "travel"): 
         destination:str = str(input("where do you want to travel: "))
