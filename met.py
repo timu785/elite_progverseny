@@ -12,7 +12,7 @@ map:str = ["Thorodin", "Ydalir", "Vidar", "_____", "Folkvang"]
 size_of_tank:int = 2
 
 def status():
-    print("-----------------------STAUTS-----------------------")
+    print("O----------------------STAUTS----------------------O")
     print(f"change of explosion on landing: {chance_of_explosion}%")
     #print(f"location: {map[location]}")
     #print(f"map: {map}")
@@ -43,7 +43,7 @@ def travel():
             print("you dont have enough fuel")
         else:
             if(random.randrange(1, 101) <= chance_of_explosion):
-                print("GAME OVER: you exploded")
+                print("\nGAME OVER: you exploded\n")
                 print("Press Enter to exit...")
                 input()
                 exit()
@@ -55,7 +55,6 @@ def travel():
                 #sikeres utazásonként a felrobbanás esélye eggyel csökken
                 chance_of_explosion -= 1
     else: print("destination does not exist")
-    status()
 
 def buy():
     ...
