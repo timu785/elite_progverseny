@@ -14,7 +14,9 @@ def status():
     print(f"map: {map}")
     print(f"fuel: {fuel}")
 
-def travel(destination:str):
+def travel():
+    destination:str = str(input("where do you want to travel: "))
+    print("")
     global location
     global fuel
     global chanceofexplosion
@@ -29,6 +31,8 @@ def travel(destination:str):
         else:
             if(random.randrange(1, 101) <= chanceofexplosion):
                 print("you exploded")
+                print("Press Enter to exit...")
+                input()
                 exit()
             else:
                 fuel = fuel - fuelconsumption
