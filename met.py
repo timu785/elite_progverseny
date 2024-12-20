@@ -1,7 +1,7 @@
 import random
 import os
 
-cheats:bool
+cheats:bool = False
 
 # százalékban, a landoláskor való felrobbanás esélye
 chance_of_explosion:int=30
@@ -30,14 +30,6 @@ def status():
     print("possible inputs:  travel, buy, explore")
     if(cheats): print("cheats:  /planet, /fuel, /explosion chance")
     print("----------------------------------------------------")
-
-# visszatér egy olyan térképpel ami mutatja hol vagyunk jelenleg
-def gps():
-    list:str=[]
-    for i in range(len(map)):
-        if(i == location): list.append(f"({map[i]})")
-        else: list.append(map[i])
-    return list
 
 def travel():
     global location
@@ -77,7 +69,23 @@ def travel():
         print("Press Enter to continue.")
         input()
 
-# generál egy új bolygót, és hozzáadja a térképhez
+def buy():
+    ...
+
+def telescope():
+    ...
+
+
+
+# visszatér egy olyan térképpel ami mutatja hol vagyunk jelenleg
+def gps():
+    list:str=[]
+    for i in range(len(map)):
+        if(i == location): list.append(f"({map[i]})")
+        else: list.append(map[i])
+    return list
+
+# generál egy új bolygót, hozzá egy technikaifejlettségi szintet, és hozzáadja a térképhez
 def add_new_planet():
     global map
     global tech_levels
@@ -113,20 +121,12 @@ def add_new_planet():
         max:int = tech_levels_avarage(tech_levels)+7
         temp:int = random.randrange(min, max + 1)
         # nem  while(temp < 1 or 15 < temp)
-        # ez a módszer jobb, mivel a nagyobb szám generálásának esélye nagyobb lesz, akkor is ha az 15 felé esik
+        # ez a módszer jobb, mivel a nagyobb szám generálásának esélye nagyobb lesz, akkor is ha a max 15 felé esik
         # tehát ha "tech_levels_avarage" = 13, akkor nagyobb eséllyel generál nagyobb számot, mint kisebb számot
         if(temp < 1): temp = 1
         if(15 < temp): temp = 15
         tech_levels.append(temp)
     map.append(planet_name)
-
-def telescope():
-    ...
-
-def buy():
-    ...
-
-
 
 def set_chance_of_explosion():
     global chance_of_explosion
@@ -138,8 +138,6 @@ def set_fuel():
     a:int = int(input("set fuel to: "))
     fuel = a
 
-
-
 # kiszámolja az utolsó 5 technikaifejlettség átlagát, a 0 vagyis űr mezőket nem beleértve, és felfele kerekíti
 def tech_levels_avarage(list:int):
     filtered_list:int=[]
@@ -147,7 +145,7 @@ def tech_levels_avarage(list:int):
         if(list[i] != 0): filtered_list.append(list[i])
     return int(sum(filtered_list) / len(filtered_list)) + 1
 
-# operációs rendszerhez alkalmazkodó képernyő tisztító, teljesen a ChatGPT generálta
+# operációs rendszerhez alkalmazkodó képernyő tisztító (teljesen a ChatGPT generálta)
 def clear_screen():
     # Check the operating system
     if os.name == 'nt':  # For Windows
