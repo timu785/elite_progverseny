@@ -135,8 +135,10 @@ def set_chance_of_explosion():
 
 def set_fuel():
     global fuel
+    global size_of_tank
     a:int = int(input("set fuel to: "))
     fuel = a
+    size_of_tank = a
 
 # kiszámolja az utolsó 5 technikaifejlettség átlagát, a 0 vagyis űr mezőket nem beleértve, és felfele kerekíti
 def tech_levels_avarage(list:int):
