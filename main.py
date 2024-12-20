@@ -26,7 +26,7 @@ for i in range(100):
         met.add_new_planet()
         met.status()
     else:
-        print("\nInvalid input, possible options are:\ntravel, buy, explore\n")
+        print("\nInvalid input, possible options are:\n   travel, buy, explore\n")
         print("Press Enter to continue.")
         input()
         met.status()

@@ -15,7 +15,7 @@ map:str = ["Thorodin", "Ydalir", "Vidar", "_____", "Folkvang"]
 tech_levels:int = [2, 4, 10, 0, 6]
 
 def status():
-    os.system('cls')
+    clear_screen()
     print("O----------------------STATUS----------------------O")
     print(f"change of explosion on landing: {chance_of_explosion}%")
     #print(f"location: {map[location]}")
@@ -125,3 +125,11 @@ def tech_levels_avarage(list:int):
     for i in range(len(list)):
         if(list[i] != 0): filtered_list.append(list[i])
     return int(sum(filtered_list) / len(filtered_list)) + 1
+
+# operációs rendszerhez alkalmazkodó képernyő tisztító, teljesen a ChatGPT generálta
+def clear_screen():
+    # Check the operating system
+    if os.name == 'nt':  # For Windows
+        os.system('cls')
+    else:  # For MacOS and Linux
+        os.system('clear')
