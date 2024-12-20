@@ -16,7 +16,7 @@ tech_levels:int = [2, 4, 10, 0, 6]
 
 def status():
     os.system('cls')
-    print("O----------------------STAUTS----------------------O")
+    print("O----------------------STATUS----------------------O")
     print(f"change of explosion on landing: {chance_of_explosion}%")
     #print(f"location: {map[location]}")
     #print(f"map: {map}")
@@ -40,14 +40,20 @@ def travel():
     global chance_of_explosion
     destination:str = str(input("where do you want to travel: "))
     if(destination == "_____"):
-        print("you cant land here")
+        print("\n---you cant land here---\n")
+        print("Press Enter to continue.")
+        input()
     elif(destination == map[location]):
-        print("you are already on this planet")
+        print("\n---you are already on this planet---\n")
+        print("Press Enter to continue.")
+        input()
     elif(destination in map):
         # az üzemanyaghasználat a helyünk és a célünk különbségének abszolútértéke
         fuelconsumption:int = abs(location-map.index(destination))
         if(fuelconsumption > fuel):
-            print("you dont have enough fuel")
+            print("\n---you dont have enough fuel---\n")
+            print("Press Enter to continue.")
+            input()
         else:
             if(random.randrange(1, 101) <= chance_of_explosion):
                 print("\nGAME OVER: you exploded\n")
@@ -61,7 +67,10 @@ def travel():
                 location=map.index(destination) 
                 #sikeres utazásonként a felrobbanás esélye eggyel csökken
                 chance_of_explosion -= 1
-    else: print("destination does not exist")
+    else:
+        print("\n---destination does not exist---\n")
+        print("Press Enter to continue.")
+        input()
 
 # generál egy új bolygót, és hozzáadja a térképhez
 def add_new_planet():
