@@ -19,16 +19,16 @@ tech_levels:int = [2, 4, 10, 0, 6]
 def status():
     clear_screen()
     print("O----------------------STATUS----------------------O")
-    print(f"change of explosion on landing: {chance_of_explosion}%")
-    print(f"fuel: {fuel}")
+    print(f"change of explosion on landing:  {chance_of_explosion}%")
+    print(f"fuel:  {fuel}")
     #print(f"location: {map[location]}")
     #print(f"map: {map}")
-    print(f"map: {gps()}")
-    print(f"tech: {tech_levels}")
-    print(f"avarage tech level: {tech_levels_avarage(tech_levels)}")
+    print(f"map:  {gps()}")
+    print(f"tech:  {tech_levels}")
+    print(f"avarage tech level:  {tech_levels_avarage(tech_levels)}")
     print("----------------------------------------------------")
-    print("possible inputs:      travel, buy, explore")
-    if(cheats): print("cheats:   /planet, /fuel, /explosion chance")
+    print("possible inputs:  travel, buy, explore")
+    if(cheats): print("cheats:  /planet, /fuel, /explosion chance")
     print("----------------------------------------------------")
 
 # visszatér egy olyan térképpel ami mutatja hol vagyunk jelenleg
@@ -83,8 +83,8 @@ def add_new_planet():
     global tech_levels
     VOWELS:str = ['a', 'e', 'i', 'o', 'u']
     CONSONANTS:str = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
-    # 40% esélye van, hogy űrt generálunk, ha a "map" utolsó 2 eleme között van bolygó
-    if(random.randrange(1,101) <= 40 and (map[-1] != "_____" or map[-2] != "_____")):
+    # 40% esélye van, hogy űrt generálunk, ha a "map" utolsó 3 eleme között van bolygó
+    if(random.randrange(1,101) <= 40 and (map[-1] != "_____" or map[-2] != "_____" or map[-3] != "_____")):
         planet_name:str = "_____"
         tech_levels.append(0)
     else:
@@ -108,11 +108,14 @@ def add_new_planet():
                     else:
                         planet_name = planet_name + random.choice(VOWELS)
         # generáljuk az új bolygó technikaifejlettségét az átlagos technikaifejlettséghez relatívan random
-        temp:int = 20
-        while(temp < 1 or 15 < temp):
-            min:int = tech_levels_avarage(tech_levels)-4
-            max:int = tech_levels_avarage(tech_levels)+8
-            temp = random.randrange(min, max+1)
+        min:int = tech_levels_avarage(tech_levels)-6
+        max:int = tech_levels_avarage(tech_levels)+9
+        temp:int = random.randrange(min, max + 1)
+        # nem  while(temp < 1 or 15 < temp)
+        # ez a módszer jobb, mivel a nagyobb szám generálásának esélye nagyobb lesz, akkor is ha az 15 felé esik
+        # tehát ha "tech_levels_avarage" = 13, akkor nagyobb eséllyel generál nagyobb számot, mint kisebb számot
+        if(temp < 1): temp = 1
+        if(15 < temp): temp = 15
         tech_levels.append(temp)
     map.append(planet_name)
 
