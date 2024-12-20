@@ -6,8 +6,7 @@
 
 import met
 
-infinite_fuel_mode:bool=False
-if(infinite_fuel_mode == True): met.fuel = 1000
+met.cheats=True
 
 met.status()
 for i in range(100):   
@@ -18,15 +17,21 @@ for i in range(100):
     elif(inputtext == "buy"):
         met.buy()
         met.status()
-    elif(inputtext == "explore"):
-        met.explore()
+    elif(inputtext == "telescope"):
+        met.telescope()
         met.status()
-    # ez egy csalókód
-    elif(inputtext == "add"):
+
+    elif(met.cheats and inputtext == "/planet"):
         met.add_new_planet()
         met.status()
+    elif(met.cheats and inputtext == "/explosion chance"):
+        met.set_chance_of_explosion()
+        met.status()
+    elif(met.cheats and inputtext == "/fuel"):
+        met.set_fuel()
+        met.status()
     else:
-        print("\nInvalid input, possible options are:\n   travel, buy, explore\n")
+        print("\n---invalid input---\n")
         print("Press Enter to continue.")
         input()
         met.status()

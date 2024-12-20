@@ -1,6 +1,8 @@
 import random
 import os
 
+cheats:bool
+
 # százalékban, a landoláskor való felrobbanás esélye
 chance_of_explosion:int=30
 fuel:int = 2
@@ -18,12 +20,15 @@ def status():
     clear_screen()
     print("O----------------------STATUS----------------------O")
     print(f"change of explosion on landing: {chance_of_explosion}%")
+    print(f"fuel: {fuel}")
     #print(f"location: {map[location]}")
     #print(f"map: {map}")
     print(f"map: {gps()}")
     print(f"tech: {tech_levels}")
     print(f"avarage tech level: {tech_levels_avarage(tech_levels)}")
-    print(f"fuel: {fuel}")
+    print("----------------------------------------------------")
+    print("possible inputs:      travel, buy, explore")
+    if(cheats): print("cheats:   /planet, /fuel, /explosion chance")
     print("----------------------------------------------------")
 
 # visszatér egy olyan térképpel ami mutatja hol vagyunk jelenleg
@@ -111,11 +116,23 @@ def add_new_planet():
         tech_levels.append(temp)
     map.append(planet_name)
 
-def explore():
+def telescope():
     ...
 
 def buy():
     ...
+
+
+
+def set_chance_of_explosion():
+    global chance_of_explosion
+    a:int = int(input("set chance of explosion to: "))
+    chance_of_explosion = a
+
+def set_fuel():
+    global fuel
+    a:int = int(input("set fuel to: "))
+    fuel = a
 
 
 
