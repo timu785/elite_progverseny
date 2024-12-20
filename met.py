@@ -108,8 +108,9 @@ def add_new_planet():
                     else:
                         planet_name = planet_name + random.choice(VOWELS)
         # generáljuk az új bolygó technikaifejlettségét az átlagos technikaifejlettséghez relatívan random
+        # így ahogy generálunk több és több bolygót, egyre magasabb lesz a technikaifejlettségük
         min:int = tech_levels_avarage(tech_levels)-6
-        max:int = tech_levels_avarage(tech_levels)+9
+        max:int = tech_levels_avarage(tech_levels)+7
         temp:int = random.randrange(min, max + 1)
         # nem  while(temp < 1 or 15 < temp)
         # ez a módszer jobb, mivel a nagyobb szám generálásának esélye nagyobb lesz, akkor is ha az 15 felé esik
@@ -139,10 +140,10 @@ def set_fuel():
 
 
 
-# kiszámolja az átlagos technikaifejlettséget a 0 vagyis űr mezőket nem beleértve, és felfele kerekíti
+# kiszámolja az utolsó 5 technikaifejlettség átlagát, a 0 vagyis űr mezőket nem beleértve, és felfele kerekíti
 def tech_levels_avarage(list:int):
     filtered_list:int=[]
-    for i in range(len(list)):
+    for i in range(len(list)-5, len(list), 1):
         if(list[i] != 0): filtered_list.append(list[i])
     return int(sum(filtered_list) / len(filtered_list)) + 1
 
