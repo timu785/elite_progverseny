@@ -14,6 +14,12 @@ for i in range(100):
     elif(inputtext == "buy"):
         met.buy()
         met.status()
-    else: print("bad input, possible inputs are: travel, buy")
+    elif(inputtext == "explore"):
+        met.explore()
+        met.status()
+    elif(inputtext == "add"):
+        met.add_new_planet()
+        met.status()
+    else: print("bad input, possible inputs are:\ntravel, buy, explore")
 
-    # print(f"i: {i}")
+    

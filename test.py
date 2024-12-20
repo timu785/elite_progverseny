@@ -2,4 +2,4 @@ import met
 
 
 
-met.gps()
+met.add_new_planet()
