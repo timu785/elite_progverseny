@@ -229,15 +229,15 @@ def generate_shop():
     # a "max_fuel"-t 3-ra állítja
     if(random.randrange(1, 101) <= tech_map[location]):
         shop_equipment.append("small tank")
-        shop_equipment_prices.append(15)
+        shop_equipment_prices.append(10)
     # a "max_fuel"-t 4-re állítja
     if(random.randrange(1, 101) <= tech_map[location]):
         shop_equipment.append("medium tank")
-        shop_equipment_prices.append(20)
+        shop_equipment_prices.append(15)
     # a "max_fuel"-t 5-re állítja
     if(random.randrange(1, 101) <= tech_map[location]):
         shop_equipment.append("large tank")
-        shop_equipment_prices.append(30)   
+        shop_equipment_prices.append(25)   
 
     shop_has_been_generated = True
 
@@ -275,7 +275,7 @@ def add_new_planet():
         # generáljuk az új bolygó technikaifejlettségét az átlagos technikaifejlettséghez relatívan random
         # így ahogy generálunk több és több bolygót, egyre magasabb lesz a technikaifejlettségük általában
         min:int = tech_map_avarage() - 6
-        max:int = tech_map_avarage() + 8
+        max:int = tech_map_avarage() + 9
         temp:int = random.randrange(min, max + 1)
         # nem  while(temp < 1 or 15 < temp)
         # ez a módszer jobb, mivel a nagyobb szám generálásának esélye nagyobb lesz, még akkor is ha a max 15 felé esik
@@ -288,14 +288,31 @@ def add_new_planet():
             telescope_map.append(True)
         else: telescope_map.append(False)
 
-# visszatér egy olyan térképpel ami mutatja hol vagyunk jelenleg
+# visszatér egy olyan térképpel ami mutatja hol vagyunk jelenleg, és technikaifejlettség alapján színkódol
 def gps():
+    #   0    1-3  4-6    7-9  10-12 13-15
+    # black  red yellow white green cyan
+    string:str = ""
+    temp:str
+    for i in range(len(map)):
+        temp = map[i]
+        if(tech_map[i] == 0): temp = f"\033[30m{temp}\033[0m"
+        if(1 <= tech_map[i] and tech_map[i] <= 3): temp = f"\033[31m{temp}\033[0m"
+        if(4 <= tech_map[i] and tech_map[i] <= 6): temp = f"\033[33m{temp}\033[0m"
+        if(7 <= tech_map[i] and tech_map[i] <= 9): temp = f"\033[37m{temp}\033[0m"
+        if(10 <= tech_map[i] and tech_map[i] <= 12): temp = f"\033[32m{temp}\033[0m"
+        if(13 <= tech_map[i] and tech_map[i] <= 15): temp = f"\033[36m{temp}\033[0m"
+        if(location == i): temp = f"({temp})"
+        string += temp + " "
+    return string
+
+    '''
     string:str = ""
     for i in range(len(map)):
         if(location == i): string += f"({map[i]}), "
         else: string += f"{map[i]}, "
     return string[:-2]
-
+    '''
     '''
     list:str=[]
     for i in range(len(map)):

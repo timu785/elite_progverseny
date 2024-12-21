@@ -5,6 +5,10 @@ import math
 #  0.9  és  1.5
 print(round(random.randrange(9, 16) * 0.1, 3))
 print()
+print("(\033[31mThis is red text\033[0m" + " asd")
+print()
+temp:str = "alma"
+print(f"\033[31m{temp}\033[0m")
 
 
 '''
