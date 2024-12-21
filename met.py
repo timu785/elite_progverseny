@@ -154,6 +154,8 @@ def generate_shop():
     shop_goods = temp
 
     # a felszerelések random generálása a technikaifejlettségtől függően
+    shop_equipment = []
+    shop_equipment_prices = []
     # ha a technikaifejlettség 6, akkor 108% eséllyel lesz dokkoló egység, ha 5 akkor 90%, ha 4 akkor 72%, ha 3 akkor 54% stb...
     if(random.randrange(1, 101) <= (tech_map[location] * 18)):
         shop_equipment.append("docking unit")
