@@ -2,13 +2,25 @@ import met
 import random
 import math
 
+int1:int = 10
+int2:int = 2
+float1:float = 3.3
+
+print(int1 > float1)
+print(int1 - float1)
+print(float1)
+print(float1 - int2)
+
+
+
+'''
 # ha egy lista nem üres akkor igaz-ra értékelődik ki
 list1:str = []
 list2:str = ["alma", "korte"]
 
 if(list1): print("ures lista")
 if(list2): print("nem ures lista")
-
+'''
 
 '''
 # árú generálása 1 és 20 között a technikaifejlettségtől függően

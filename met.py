@@ -14,14 +14,14 @@ credits:float = 10
 goods:int = 0
 max_goods:int = 5
 goods_have_been_sold:bool = False
+# a felszereléseink
+equipment:str = []
 # a bolt tárgyai
 shop_fuel:int
 shop_goods:int
 shop_equipment:str = []
 shop_equipment_prices:int = []
 shop_has_been_generated:bool = False
-# a felszereléseink
-equipment:str = []
 # hol vagyunk a térképen, vagyis a térkép lista indexe
 location:int = 0
 # térkép, vagyis bolygók listája, az űrt 3*_-al jelöljük
@@ -102,6 +102,9 @@ def travel():
         input()
 
 def buy():
+    global credits
+    global shop_fuel
+    global fuel
     if(shop_has_been_generated == False):
         generate_shop()
     print("shop items:")
@@ -110,6 +113,23 @@ def buy():
     for i in range(len(shop_equipment)):
         print(f"{shop_equipment[i]}   ${shop_equipment_prices[i]}")
     to_buy:str=str(input("what do you want to buy?: "))
+    if(to_buy == "fuel"):
+        fuel_to_buy:int=int(input("how much fuel do you want to buy?: "))
+        if((fuel_to_buy > credits) or (fuel_to_buy > shop_fuel) or (fuel + fuel_to_buy > max_fuel)):
+            if(fuel_to_buy > credits):
+                print("\n---you don't have enough credits---\n")
+            if(fuel_to_buy > shop_fuel):
+                print("\n---the shop doesn't have that much fuel---\n")
+            if(fuel + fuel_to_buy > max_fuel):
+                print("\n---your fuel tank is too small for that---\n")
+            print("Press Enter to continue.")
+            input()
+        else:
+            credits -= fuel_to_buy
+            shop_fuel -= fuel_to_buy
+            fuel += fuel_to_buy
+            
+
 
 def telescope():
     if(telescope_map[location] == True):
@@ -184,7 +204,7 @@ def generate_shop():
         shop_equipment_prices.append(random.randrange(45, 76))
     # 40%-al növeli az esélyét hogy megnyerjük a harcot
     if(random.randrange(1, 101) <= tech_map[location]):
-        shop_equipment.append("rechargable adaptive energy shield")
+        shop_equipment.append("rechargable alien energy shield")
         shop_equipment_prices.append(random.randrange(60, 101))
 
     # 3 féle üzemanyagtartály van, ezeknek az az előnye, hogy nagyobb távolságot tudunk utazni, és jobban elkerülhetjük hogy egy bolygón ragadjunk
