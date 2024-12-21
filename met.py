@@ -37,6 +37,7 @@ telescope_map:bool = [False, False, False, False, True]
 
 def status():
     global goods_have_just_been_sold
+    utilize_equipment()
     clear_screen()
     print(">>>>>------------------STATUS------------------<<<<<")
     if(chance_of_explosion != 0): print(f"change of explosion on landing:  {chance_of_explosion}%")
@@ -44,7 +45,7 @@ def status():
     #print(f"location: {map[location]}")
     #print(f"map: {map}")
     print(f"map:  {gps()}")
-    print(f"tech map:  {tech_map}")
+    #print(f"tech map:  {tech_map}")
     print(f"available telescopes:  {available_telescopes()}")
     #print(f"avarage tech level:  {tech_map_avarage()}")
     print("----------------------------------------------------")
@@ -59,7 +60,7 @@ def status():
     print(f"chances of winning: {0}%")
     print("----------------------------------------------------")
     print("possible inputs:  travel, buy, telescope")
-    if(cheats): print("cheats:  /fuel, /credits, /planet, /explosion chance")
+    if(cheats): print("cheat:  /fuel, /credits, /planet, /explosion chance, /cheats")
     print("----------------------------------------------------")
 
 def travel():
@@ -112,12 +113,12 @@ def buy():
     global goods
     if(shop_has_been_generated == False):
         generate_shop()
-    print("shop items:")
+    print("shop items:\n")
     print(f"{shop_fuel} fuel   $1 per piece")
-    print(f"{shop_goods} goods   $1 per piece")
+    print(f"{shop_goods} goods   $1 per piece\n")
     for i in range(len(shop_equipment)):
         print(f"{shop_equipment[i]}   ${shop_equipment_prices[i]}")
-    to_buy:str=str(input("what do you want to buy?: "))
+    to_buy:str=str(input("\nwhat do you want to buy?: "))
     if(to_buy == "fuel"):
         fuel_to_buy:int=int(input("how much fuel do you want to buy?: "))
         if((fuel_to_buy > credits) or (fuel_to_buy > shop_fuel) or (fuel + fuel_to_buy > max_fuel)):
@@ -198,11 +199,11 @@ def generate_shop():
     if(random.randrange(1, 101) <= (tech_map[location] * 18)):
         shop_equipment.append("docking unit")
         shop_equipment_prices.append(10)
-    # ha a technikaifejlettség 15, akkor 15% eséllyel lesz tolmácsgép, ha 14 akkor 14%, ha 13 akkor 13% stb...
-    if(random.randrange(1, 101) <= tech_map[location]):
+    # ha a technikaifejlettség 15, akkor 30% eséllyel lesz tolmácsgép, ha 14 akkor 28%, ha 13 akkor 26% stb...
+    if(random.randrange(1, 101) <= (tech_map[location] * 2)):
         shop_equipment.append("translation device")
         shop_equipment_prices.append(5)
-    # ha a technikaifejlettség 15, akkor 30% eséllyel lesz konténer, ha 14 akkor 28%, ha 13 akkor 26%, ha 12 akkor 24% stb...
+    # ha a technikaifejlettség 15, akkor 30% eséllyel lesz konténer, ha 14 akkor 28%, ha 13 akkor 26% stb...
     if(random.randrange(1, 101) <= (tech_map[location] * 2)):
         shop_equipment.append("container")
         shop_equipment_prices.append(3)
@@ -210,7 +211,7 @@ def generate_shop():
     # 4 féle harc felszerelés van ami majd segít minket a harcban
     # 10%-al növeli az esélyét hogy megnyerjük a harcot
     if(random.randrange(1, 101) <= tech_map[location]):
-        shop_equipment.append("shield")
+        shop_equipment.append("armor")
         shop_equipment_prices.append(random.randrange(15, 26))
     # 20%-al növeli az esélyét hogy megnyerjük a harcot
     if(random.randrange(1, 101) <= tech_map[location]):
@@ -288,6 +289,9 @@ def add_new_planet():
             telescope_map.append(True)
         else: telescope_map.append(False)
 
+def utilize_equipment():
+    ...
+
 # visszatér egy olyan térképpel ami mutatja hol vagyunk jelenleg, és technikaifejlettség alapján színkódol
 def gps():
     #   0    1-3  4-6    7-9  10-12 13-15
@@ -306,28 +310,27 @@ def gps():
         string += temp + " "
     return string
 
-    '''
-    string:str = ""
-    for i in range(len(map)):
-        if(location == i): string += f"({map[i]}), "
-        else: string += f"{map[i]}, "
-    return string[:-2]
-    '''
-    '''
-    list:str=[]
-    for i in range(len(map)):
-        if(i == location): list.append(f"({map[i]})")
-        else: list.append(map[i])
-    return list
-    '''
-
 def available_telescopes():
+    string:str = ""
+    temp:str
+    for i in range(len(map)):
+        temp = map[i]
+        if(telescope_map[i] == True):
+            if(1 <= tech_map[i] and tech_map[i] <= 3): temp = f"\033[31m{temp}\033[0m"
+            if(4 <= tech_map[i] and tech_map[i] <= 6): temp = f"\033[33m{temp}\033[0m"
+            if(7 <= tech_map[i] and tech_map[i] <= 9): temp = f"\033[37m{temp}\033[0m"
+            if(10 <= tech_map[i] and tech_map[i] <= 12): temp = f"\033[32m{temp}\033[0m"
+            if(13 <= tech_map[i] and tech_map[i] <= 15): temp = f"\033[36m{temp}\033[0m"
+            string += temp + " "
+    return string
+
+    '''    
     string:str = ""
     for i in range(len(telescope_map)):
         if(telescope_map[i] == True):
             string += f"{map[i]}, "
     return string[:-2]
-
+    '''
 def sell_goods():
     global goods_have_just_been_sold
     global goods

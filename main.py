@@ -21,7 +21,7 @@ while(True):
         met.telescope()
 
     elif(inputtext =="/cheats"):
-        met.cheats = True
+        met.cheats = not met.cheats
     elif(met.cheats and inputtext == "/fuel"):
         met.set_fuel()
     elif(met.cheats and inputtext == "/credits"):
