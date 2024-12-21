@@ -10,8 +10,6 @@
 
 import met
 
-met.cheats=True
-
 met.status()
 while(True):   
     inputtext:str=str(input("input: "))
@@ -22,6 +20,8 @@ while(True):
     elif(inputtext == "telescope"):
         met.telescope()
 
+    elif(inputtext =="/cheats"):
+        met.cheats = True
     elif(met.cheats and inputtext == "/fuel"):
         met.set_fuel()
     elif(met.cheats and inputtext == "/credits"):

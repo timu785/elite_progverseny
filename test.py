@@ -2,17 +2,41 @@ import met
 import random
 import math
 
+# ha egy lista nem üres akkor igaz-ra értékelődik ki
+list1:str = []
+list2:str = ["alma", "korte"]
 
+if(list1): print("ures lista")
+if(list2): print("nem ures lista")
+
+
+'''
+# árú generálása 1 és 20 között a technikaifejlettségtől függően
+for i in range(15):
+    x:float = 15 / 20
+    tech_level = i + 1
+    middle:int = math.ceil(tech_level / x)
+    min:int = middle - 4
+    max:int = middle + 4
+    temp:int = random.randrange(min, max + 1)
+    if(temp < 1): temp = 1
+    #if(20 < temp): temp = 20
+    print(f"tech level {tech_level}:   {middle}   {temp}")
+'''
+
+'''
 # üzemanyag generálása 1 és 5 között a technikaifejlettségtől függően
 for i in range(15):
-    min:int = math.ceil((i+1)/3) - 1
-    max:int = math.ceil((i+1)/3) + 4
+    x:float = 15 / 5
+    tech_level = i + 1
+    middle:int = math.ceil(tech_level / x)
+    min:int = middle - 1
+    max:int = middle + 4
     temp = random.randrange(min, max + 1)
     if(temp < 1): temp = 1
     if(5 < temp): temp = 5
-    print(f"{i+1}:   {math.ceil((i+1)/3)}   {temp}")
-
-
+    print(f"tech level {tech_level}:   {middle}   {temp}")
+'''
 
 '''
 random_number:int = random.randrange(1, 101)

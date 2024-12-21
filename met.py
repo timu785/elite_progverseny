@@ -9,7 +9,7 @@ chance_of_explosion:int=30
 fuel:int = 2
 # az üzemanyagtartály mérete, a jelenlegi üzemanagy + venni kívánt üzemanyag ezt nem haladhatja meg
 max_fuel:int = 2
-credits:int = 10
+credits:float = 10
 # áru
 goods:int = 0
 max_goods:int = 5
@@ -18,6 +18,7 @@ goods_have_been_sold:bool = False
 shop_fuel:int
 shop_goods:int
 shop_equipment:str = []
+shop_equipment_prices:int = []
 shop_has_been_generated:bool = False
 # a felszereléseink
 equipment:str = []
@@ -36,7 +37,7 @@ def status():
     global goods_have_been_sold
     clear_screen()
     print(">>>>>------------------STATUS------------------<<<<<")
-    print(f"change of explosion on landing:  {chance_of_explosion}%")
+    if(chance_of_explosion != 0): print(f"change of explosion on landing:  {chance_of_explosion}%")
     print(f"fuel:  {fuel}/{max_fuel}")
     #print(f"location: {map[location]}")
     #print(f"map: {map}")
@@ -50,7 +51,7 @@ def status():
         goods_have_been_sold = False
     print(f"credits:  ${credits}")
     print(f"goods:  {goods}/{max_goods}")
-    print(f"equipment:  {equipment}")
+    if(equipment): print(f"equipment:  {equipment}")
     print("----------------------------------------------------")
     print("possible inputs:  travel, buy, telescope")
     if(cheats): print("cheats:  /fuel, /credits, /planet, /explosion chance")
@@ -92,9 +93,8 @@ def travel():
                 fuel -= fuelconsumption
                 if(chance_of_explosion != 0): chance_of_explosion -= 1
                 # sikeres utazásnál automatikusan eladjuk az árut
-                ...
-                #goods_have_been_sold = True
-                # utazás után a boltot újra lehet generálni
+                sell_goods()
+                # utazás után a boltot újra lehet generálni, mert egy új bolygón vagyunk/eltelt idő és a már meglátogatott bolygók készletei frissültek
                 shop_has_been_generated = False
     else:
         print("\n---destination does not exist---\n")
@@ -105,9 +105,10 @@ def buy():
     if(shop_has_been_generated == False):
         generate_shop()
     print("shop items:")
-    print(f"{shop_fuel} fuel")
-    print(f"{shop_goods} goods")
-    print(f"equipment: {shop_equipment}")
+    print(f"{shop_fuel} fuel   $1 per piece")
+    print(f"{shop_goods} goods   $1 per piece")
+    for i in range(len(shop_equipment)):
+        print(f"{shop_equipment[i]}   ${shop_equipment_prices[i]}")
     to_buy:str=str(input("what do you want to buy?: "))
 
 def telescope():
@@ -129,19 +130,44 @@ def generate_shop():
     global shop_fuel
     global shop_goods
     global shop_equipment
+    global shop_equipment_prices
     global shop_has_been_generated
-    # üzemanyag generálása 1 és 5 között a technikaifejlettségtől függően
-    # ennek köszönhetően, óvatosan kell olyan alacsony technikaifejlettségő bolygóra utazni, ami más bolygóktól messze van, mert ottragadhatunk
-    min:int = math.ceil(tech_map[location]/3) - 1
-    max:int = math.ceil(tech_map[location]/3) + 4
+    # üzemanyag random generálása 1 és 5 között a technikaifejlettségtől függően
+    # ennek köszönhetően, óvatosan kell olyan alacsony technikaifejlettségű bolygóra utazni, ami más bolygóktól messze van, mert ottragadhatunk
+    x:float = 15 / 5
+    min:int = math.ceil(tech_map[location] / x) - 1
+    max:int = math.ceil(tech_map[location] / x) + 4
     temp:int = random.randrange(min, max + 1)
     if(temp < 1): temp = 1
     if(5 < temp): temp = 5
     shop_fuel = temp
 
-    shop_goods = 0
+    # árú random generálása 0 és 20 között (1 és 21 között, utána kivonunk egyet), a technikaifejlettségtől függően
+    x = 15 / 21
+    min = math.ceil(tech_map[location] / x) - 4
+    max = math.ceil(tech_map[location] / x) + 4
+    temp:int = random.randrange(min, max + 1)
+    if(temp < 1): temp = 1
+    # a felső limit opcionális, ettől még 1 és 21 között lesz a randomgenerálás közepe (tech_map[location] / x), de ha 21 fölé esik akkor nem vágódik le
+    #if(21 < temp): temp = 21
+    temp -= 1
+    shop_goods = temp
 
-    shop_equipment = ["fart"]
+    # a felszerelések random generálása a technikaifejlettségtől függően
+    shop_equipment = ["sushi"]
+    shop_equipment_prices = [200]
+    # ha a technikaifejlettség 6, akkor 108% eséllyel lesz dokkoló egység, ha 5 akkor 90%, ha 4 akkor 72%, ha 3 akkor 54% stb...
+    if(random.randrange(1, 101) <= (tech_map[location] * 18)):
+        shop_equipment.append("docking unit")
+        shop_equipment_prices.append(10)
+    # ha a technikaifejlettség 15, akkor 15% eséllyel lesz tolmácsgép, ha 14 akkor 14%, ha 13 akkor 13% stb...
+    if(random.randrange(1, 101) <= tech_map[location]):
+        shop_equipment.append("translation device")
+        shop_equipment_prices.append(5)
+    # ha a technikaifejlettség 15, akkor 30% eséllyel lesz konténer, ha 14 akkor 28%, ha 13 akkor 26%, ha 12 akkor 24% stb...
+    if(random.randrange(1, 101) <= (tech_map[location] * 2)):
+        shop_equipment.append("container")
+        shop_equipment_prices.append(3)
 
     shop_has_been_generated = True
 
@@ -215,6 +241,12 @@ def available_telescopes():
             string += f"{map[i]}, "
     return string[:-2]
 
+def sell_goods():
+    global goods_have_been_sold
+    if(0 < goods):
+        ...
+        goods_have_been_sold = True
+
 # formázottan kilistázza a felszereléseinket
 def list_equipment():
     ...
@@ -231,11 +263,11 @@ def set_fuel():
     global max_fuel
     a:int = int(input("set fuel to: "))
     fuel = a
-    max_fuel = a + 4
+    max_fuel = a
 
 def set_credits():
     global credits
-    a:int = int(input("set credits to: "))
+    a:float = float(input("set credits to: "))
     credits = a
 
 # kiszámolja az utolsó 5 technikaifejlettség átlagát, a 0 vagyis űr mezőket nem beleértve, és felfelé kerekíti
