@@ -104,7 +104,9 @@ def travel():
 def buy():
     global credits
     global shop_fuel
+    global shop_goods
     global fuel
+    global goods
     if(shop_has_been_generated == False):
         generate_shop()
     print("shop items:")
@@ -128,7 +130,22 @@ def buy():
             credits -= fuel_to_buy
             shop_fuel -= fuel_to_buy
             fuel += fuel_to_buy
-            
+    elif(to_buy == "goods"):
+        goods_to_buy:int=int(input("how many goods do you want to buy?: "))
+        if((goods_to_buy > credits) or (goods_to_buy > shop_goods) or (goods + goods_to_buy > max_goods)):
+            if(goods_to_buy > credits):
+                print("\n---you don't have enough credits---\n")
+            if(goods_to_buy > shop_goods):
+                print("\n---the shop doesn't have that many goods---\n")
+            if(goods + goods_to_buy > max_goods):
+                print("\n---you can't store that many goods---\n")
+            print("Press Enter to continue.")
+            input()
+        else:
+            credits -= goods_to_buy
+            shop_goods -= goods_to_buy
+            goods += goods_to_buy
+
 
 
 def telescope():
