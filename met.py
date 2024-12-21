@@ -154,8 +154,6 @@ def generate_shop():
     shop_goods = temp
 
     # a felszerelések random generálása a technikaifejlettségtől függően
-    shop_equipment = ["sushi"]
-    shop_equipment_prices = [200]
     # ha a technikaifejlettség 6, akkor 108% eséllyel lesz dokkoló egység, ha 5 akkor 90%, ha 4 akkor 72%, ha 3 akkor 54% stb...
     if(random.randrange(1, 101) <= (tech_map[location] * 18)):
         shop_equipment.append("docking unit")
@@ -168,6 +166,24 @@ def generate_shop():
     if(random.randrange(1, 101) <= (tech_map[location] * 2)):
         shop_equipment.append("container")
         shop_equipment_prices.append(3)
+
+    # 4 féle harc felszerelés van ami majd segít minket a harcban
+    # 10%-al növeli az esélyét hogy megnyerjük a harcot
+    if(random.randrange(1, 101) <= tech_map[location]):
+        shop_equipment.append("shield")
+        shop_equipment_prices.append(random.randrange(15, 26))
+    # 20%-al növeli az esélyét hogy megnyerjük a harcot
+    if(random.randrange(1, 101) <= tech_map[location]):
+        shop_equipment.append("plasma cannon")
+        shop_equipment_prices.append(random.randrange(30, 51))
+    # 30%-al növeli az esélyét hogy megnyerjük a harcot
+    if(random.randrange(1, 101) <= tech_map[location]):
+        shop_equipment.append("advanced missile launcher")
+        shop_equipment_prices.append(random.randrange(45, 76))
+    # 40%-al növeli az esélyét hogy megnyerjük a harcot
+    if(random.randrange(1, 101) <= tech_map[location]):
+        shop_equipment.append("rechargable adaptive energy shield")
+        shop_equipment_prices.append(random.randrange(60, 101))
 
     shop_has_been_generated = True
 
