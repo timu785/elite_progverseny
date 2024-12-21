@@ -13,7 +13,9 @@ credits:float = 10
 # áru
 goods:int = 0
 max_goods:int = 5
-goods_have_been_sold:bool = False
+goods_have_just_been_sold:bool = False
+goods_sold:int
+credits_gained:float
 # a felszereléseink
 equipment:str = []
 # a bolt tárgyai
@@ -34,7 +36,7 @@ tech_map:int = [2, 4, 10, 0, 6]
 telescope_map:bool = [False, False, False, False, True]
 
 def status():
-    global goods_have_been_sold
+    global goods_have_just_been_sold
     clear_screen()
     print(">>>>>------------------STATUS------------------<<<<<")
     if(chance_of_explosion != 0): print(f"change of explosion on landing:  {chance_of_explosion}%")
@@ -46,12 +48,15 @@ def status():
     print(f"available telescopes:  {available_telescopes()}")
     #print(f"avarage tech level:  {tech_map_avarage()}")
     print("----------------------------------------------------")
-    if(goods_have_been_sold):
-        print(f"\n{5} goods sold for {5} credits\n")
-        goods_have_been_sold = False
+    if(goods_have_just_been_sold):
+        print(f"\n{goods_sold} goods sold for {credits_gained} credits\n")
+        goods_have_just_been_sold = False
     print(f"credits:  ${credits}")
     print(f"goods:  {goods}/{max_goods}")
     if(equipment): print(f"equipment:  {equipment}")
+    print("----------------------------------------------------")
+    print(f"days left: {100}")
+    print(f"chances of winning: {0}%")
     print("----------------------------------------------------")
     print("possible inputs:  travel, buy, telescope")
     if(cheats): print("cheats:  /fuel, /credits, /planet, /explosion chance")
@@ -61,9 +66,7 @@ def travel():
     global location
     global fuel
     global chance_of_explosion
-    global goods_have_been_sold
     global shop_has_been_generated
-    goods_have_been_sold = False
     destination:str = str(input("where do you want to travel?: "))
     if(destination == "___"):
         print("\n---you cant land here---\n")
@@ -88,7 +91,7 @@ def travel():
                 input()
                 exit()
             else:
-                # utazunk, vagyis a helyt átállítjuk a célra
+                # utazunk, vagyis a helyt átállítjuk a cél helyére
                 location=map.index(destination)
                 fuel -= fuelconsumption
                 if(chance_of_explosion != 0): chance_of_explosion -= 1
@@ -127,7 +130,7 @@ def buy():
             print("Press Enter to continue.")
             input()
         else:
-            credits -= fuel_to_buy
+            credits -= round(fuel_to_buy, 3)
             shop_fuel -= fuel_to_buy
             fuel += fuel_to_buy
     elif(to_buy == "goods"):
@@ -142,11 +145,9 @@ def buy():
             print("Press Enter to continue.")
             input()
         else:
-            credits -= goods_to_buy
+            credits -= round(goods_to_buy, 3)
             shop_goods -= goods_to_buy
             goods += goods_to_buy
-
-
 
 def telescope():
     if(telescope_map[location] == True):
@@ -311,10 +312,17 @@ def available_telescopes():
     return string[:-2]
 
 def sell_goods():
-    global goods_have_been_sold
+    global goods_have_just_been_sold
+    global goods
+    global credits
+    global goods_sold
+    global credits_gained
     if(0 < goods):
-        ...
-        goods_have_been_sold = True
+        goods_sold = goods
+        credits_gained = goods_sold * round(random.randrange(9, 16) * 0.1, 3)
+        goods -= goods_sold
+        credits += round(credits_gained, 3)
+        goods_have_just_been_sold = True
 
 # formázottan kilistázza a felszereléseinket
 def list_equipment():
@@ -337,7 +345,7 @@ def set_fuel():
 def set_credits():
     global credits
     a:float = float(input("set credits to: "))
-    credits = a
+    credits = round(a, 3)
 
 # kiszámolja a technikaifejlettség átlagát, a 0 vagyis űr mezőket nem beleértve, és felfelé kerekíti
 def tech_map_avarage():

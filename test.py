@@ -2,6 +2,12 @@ import met
 import random
 import math
 
+#  0.9  és  1.5
+print(round(random.randrange(9, 16) * 0.1, 3))
+print()
+
+
+'''
 int1:int = 10
 int2:int = 2
 float1:float = 3.3
@@ -10,8 +16,7 @@ print(int1 > float1)
 print(int1 - float1)
 print(float1)
 print(float1 - int2)
-
-
+'''
 
 '''
 # ha egy lista nem üres akkor igaz-ra értékelődik ki
