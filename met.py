@@ -286,10 +286,10 @@ def set_credits():
     a:float = float(input("set credits to: "))
     credits = a
 
-# kiszámolja az utolsó 5 technikaifejlettség átlagát, a 0 vagyis űr mezőket nem beleértve, és felfelé kerekíti
+# kiszámolja a technikaifejlettség átlagát, a 0 vagyis űr mezőket nem beleértve, és felfelé kerekíti
 def tech_map_avarage():
     filtered_list:int=[]
-    for i in range(len(tech_map)-5, len(tech_map), 1):
+    for i in range(len(tech_map)):
         if(tech_map[i] != 0): filtered_list.append(tech_map[i])
     return math.ceil(sum(filtered_list) / len(filtered_list))
 
