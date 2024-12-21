@@ -187,6 +187,20 @@ def generate_shop():
         shop_equipment.append("rechargable adaptive energy shield")
         shop_equipment_prices.append(random.randrange(60, 101))
 
+    # 3 féle üzemanyagtartály van, ezeknek az az előnye, hogy nagyobb távolságot tudunk utazni, és jobban elkerülhetjük hogy egy bolygón ragadjunk
+    # a "max_fuel"-t 3-ra állítja
+    if(random.randrange(1, 101) <= tech_map[location]):
+        shop_equipment.append("small tank")
+        shop_equipment_prices.append(15)
+    # a "max_fuel"-t 4-re állítja
+    if(random.randrange(1, 101) <= tech_map[location]):
+        shop_equipment.append("medium tank")
+        shop_equipment_prices.append(20)
+    # a "max_fuel"-t 5-re állítja
+    if(random.randrange(1, 101) <= tech_map[location]):
+        shop_equipment.append("large tank")
+        shop_equipment_prices.append(30)   
+
     shop_has_been_generated = True
 
 # generál egy új bolygót, hozzá technikaifejlettségi szintet, teleszkópot, és hozzáadja a térképhez
