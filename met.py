@@ -43,7 +43,7 @@ def status():
     print(f"map:  {gps()}")
     print(f"tech map:  {tech_map}")
     print(f"available telescopes:  {available_telescopes()}")
-    #print(f"avarage tech level:  {tech_map_avarage(tech_map)}")
+    #print(f"avarage tech level:  {tech_map_avarage()}")
     print("----------------------------------------------------")
     if(goods_have_been_sold):
         print(f"\n{5} goods sold for {5} credits\n")
@@ -178,12 +178,12 @@ def add_new_planet():
         map.append(planet_name)
         # generáljuk az új bolygó technikaifejlettségét az átlagos technikaifejlettséghez relatívan random
         # így ahogy generálunk több és több bolygót, egyre magasabb lesz a technikaifejlettségük általában
-        min:int = tech_map_avarage(tech_map) - 6
-        max:int = tech_map_avarage(tech_map) + 8
+        min:int = tech_map_avarage() - 6
+        max:int = tech_map_avarage() + 8
         temp:int = random.randrange(min, max + 1)
         # nem  while(temp < 1 or 15 < temp)
         # ez a módszer jobb, mivel a nagyobb szám generálásának esélye nagyobb lesz, még akkor is ha a max 15 felé esik
-        # tehát ha "tech_map_avarage" = 14, akkor nagyobb eséllyel generál 15-öt,  mint 13-at, 12-őt, 11-et, 10-et stb... együtt
+        # tehát ha "tech_map_avarage()" = 14, akkor nagyobb eséllyel generál 15-öt,  mint 13-at, 12-őt, 11-et, 10-et stb... együtt
         if(temp < 1): temp = 1
         if(15 < temp): temp = 15
         tech_map.append(temp)
@@ -239,10 +239,10 @@ def set_credits():
     credits = a
 
 # kiszámolja az utolsó 5 technikaifejlettség átlagát, a 0 vagyis űr mezőket nem beleértve, és felfelé kerekíti
-def tech_map_avarage(list:int):
+def tech_map_avarage():
     filtered_list:int=[]
-    for i in range(len(list)-5, len(list), 1):
-        if(list[i] != 0): filtered_list.append(list[i])
+    for i in range(len(tech_map)-5, len(tech_map), 1):
+        if(tech_map[i] != 0): filtered_list.append(tech_map[i])
     return math.ceil(sum(filtered_list) / len(filtered_list))
 
 # operációs rendszerhez alkalmazkodó képernyő tisztító (teljesen a ChatGPT generálta)
