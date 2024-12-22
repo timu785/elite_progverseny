@@ -9,7 +9,7 @@ chance_of_explosion:int=30
 fuel:int = 2
 # az üzemanyagtartály mérete, a jelenlegi üzemanagy + venni kívánt üzemanyag ezt nem haladhatja meg
 max_fuel:int = 2
-credits:float = random.randrange(15, 22)
+credits:float = random.randrange(15, 31)
 # áru
 goods:int = 0
 max_goods:int = 5
@@ -36,7 +36,7 @@ tech_map:int = [2, 4, 10, 0, 6]
 telescope_map:bool = [False, False, False, False, True]
 chance_of_winning:int
 # maradt napok száma, utazásonként csökken 1-el
-days_left:int = random.randrange(25, 40)
+days_left:int = random.randrange(25, 41)
 
 
 def status():
@@ -170,7 +170,7 @@ def buy():
         # ebben az if feltételben az alatta lévő 3 if feltétele van ÉS-el összekötve
         if(
             (shop_equipment_prices[shop_equipment.index(to_buy)] > credits) or
-            ((to_buy != "container") and (to_buy in equipment)) or
+            ((to_buy != "container") and (to_buy != "translation device") and (to_buy in equipment)) or
             (
                 ((to_buy == "medium tank") and ("large tank" in equipment)) or
                 ((to_buy == "small tank") and ("medium tank" in equipment)) or
@@ -400,6 +400,7 @@ def sell_goods():
     global credits_gained
     if(0 < goods):
         goods_sold = goods
+        # minnél több konténerünk van, annál több a profit árueladáskor
         credits_gained = round(goods_sold * random.randrange(90 + (15 * equipment.count("translation device")), 151 + (15 * equipment.count("translation device"))) * 0.01, 3)
         goods -= goods_sold
         credits += credits_gained
