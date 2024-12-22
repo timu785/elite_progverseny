@@ -403,9 +403,15 @@ def set_credits():
     a:float = float(input("set credits to: "))
     credits = round(a, 3)
 
+# kiírja a bolt felszereléseit, a "legjobbakat" magentában
 def print_shop_equipment():
     for i in range(len(shop_equipment)):
-        print(f"{shop_equipment[i]}   ${shop_equipment_prices[i]}")
+        if(shop_equipment[i] == "advanced missile launcher" or
+           shop_equipment[i] == "rechargable alien energy shield" or
+           shop_equipment[i] == "large tank"):
+            print(f"\033[35m{shop_equipment[i]}\033[0m   ${shop_equipment_prices[i]}")
+        else:
+            print(f"{shop_equipment[i]}   ${shop_equipment_prices[i]}")
 
 # kiszámolja a technikaifejlettség átlagát, a 0 vagyis űr mezőket nem beleértve, és felfelé kerekíti
 def tech_map_avarage():
