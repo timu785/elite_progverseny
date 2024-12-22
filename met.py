@@ -180,11 +180,9 @@ def buy():
             # ha nincs elég pénzünk
             if(shop_equipment_prices[shop_equipment.index(to_buy)] > credits):
                 print("\n---you don't have enough credits---\n")
-                print("Press Enter to continue.")
             # csak konténerből lehet többet venni, vagyis HA a venni kívánt tárgy nem konténer ÉS már vettünk belőle, AKKOR nem vehetünk
             if((to_buy != "container") and (to_buy in equipment)):
                 print("\n---you already have this equipment---\n")
-                print("Press Enter to continue.")
             # ha a venni kívánt tanknál van már egy nagyobb tankunk, akkor nem vehetjük meg
             if(
                 ((to_buy == "medium tank") and ("large tank" in equipment)) or
@@ -192,7 +190,7 @@ def buy():
                 ((to_buy == "small tank") and ("large tank" in equipment))
             ):
                 print("\n---you already have a bigger tank---\n")
-                print("Press Enter to continue.")
+            print("Press Enter to continue.")
             input()
         else:
             # sikeres felszerelés vásárlás
