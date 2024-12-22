@@ -9,7 +9,7 @@ chance_of_explosion:int=30
 fuel:int = 2
 # az üzemanyagtartály mérete, a jelenlegi üzemanagy + venni kívánt üzemanyag ezt nem haladhatja meg
 max_fuel:int = 2
-credits:float = random.randrange(15, 31)
+credits:float = random.randrange(15, 41)
 # áru
 goods:int = 0
 max_goods:int = 5
@@ -36,7 +36,7 @@ tech_map:int = [2, 4, 10, 0, 6]
 telescope_map:bool = [False, False, False, False, True]
 chance_of_winning:int
 # maradt napok száma, utazásonként csökken 1-el
-days_left:int = random.randrange(25, 41)
+days_left:int = random.randrange(20, 31)
 
 
 def status():
@@ -252,8 +252,8 @@ def generate_shop():
     if(random.randrange(1, 101) <= (tech_map[location] * 18)):
         shop_equipment.append("docking unit")
         shop_equipment_prices.append(10)
-    # ha a technikaifejlettség 15, akkor 30% eséllyel lesz tolmácsgép, ha 14 akkor 28%, ha 13 akkor 26% stb...
-    if(random.randrange(1, 101) <= (tech_map[location] * 2)):
+    # ha a technikaifejlettség 15, akkor 60% eséllyel lesz tolmácsgép, ha 14 akkor 56%, ha 13 akkor 52% stb...
+    if(random.randrange(1, 101) <= (tech_map[location] * 4)):
         shop_equipment.append("translation device")
         shop_equipment_prices.append(5)
     # ha a technikaifejlettség 15, akkor 30% eséllyel lesz konténer, ha 14 akkor 28%, ha 13 akkor 26% stb...
