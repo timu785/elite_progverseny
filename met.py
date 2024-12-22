@@ -34,6 +34,10 @@ tech_map:int = [2, 4, 10, 0, 6]
 # az adott indexű bolygónak van-e teleszkópja
 # a map-al "együtt működik"
 telescope_map:bool = [False, False, False, False, True]
+chance_of_winning:int
+# maradt napok száma, utazásonként csökken 1-el
+days_left:int = random.randrange(25, 40)
+
 
 def status():
     global goods_have_just_been_sold
@@ -52,14 +56,14 @@ def status():
     if(goods_have_just_been_sold):
         print(f"\n{goods_sold} goods sold for {credits_gained} credits\n")
         goods_have_just_been_sold = False
-    print(f"credits:  ${credits}")
+    print(f"credits:  ${round(credits, 3)}")
     print(f"goods:  {goods}/{max_goods}")
     if(equipment):
         print("equipment:")
         print_equipment()
     print("----------------------------------------------------")
-    print(f"days left: {100}")
-    print(f"chances of winning: {0}%")
+    print(f"days left: {days_left}")
+    print(f"chances of winning: {chance_of_winning}%")
     print("----------------------------------------------------")
     print("possible inputs:  travel, buy, telescope")
     if(cheats): print("cheat:  /fuel, /credits, /planet, /explosion chance, /cheats")
@@ -70,6 +74,7 @@ def travel():
     global fuel
     global chance_of_explosion
     global shop_has_been_generated
+    global days_left
     destination:str = str(input("where do you want to travel?: "))
     if(destination == "___"):
         print("\n---you cant land here---\n")
@@ -97,6 +102,7 @@ def travel():
                 location=map.index(destination)
                 fuel -= fuelconsumption
                 if(chance_of_explosion != 0): chance_of_explosion -= 1
+                days_left -= 1
                 # sikeres utazásnál automatikusan eladjuk az árut
                 sell_goods()
                 # utazás után a boltot újra lehet generálni, mert egy új bolygón vagyunk/a már meglátogatott bolygók készletei frissültek az idő teltével
@@ -189,6 +195,7 @@ def buy():
                 print("Press Enter to continue.")
             input()
         else:
+            # sikeres felszerelés vásárlás
             equipment.append(to_buy)
             credits -= round(shop_equipment_prices[shop_equipment.index(to_buy)], 3)
             del shop_equipment_prices[shop_equipment.index(to_buy)]
@@ -274,19 +281,15 @@ def generate_shop():
         shop_equipment.append("rechargable alien energy shield")
         shop_equipment_prices.append(random.randrange(60, 101))
 
-    # 3 féle üzemanyagtartály van, ezeknek az az előnye, hogy nagyobb távolságot tudunk utazni, és jobban elkerülhetjük hogy egy bolygón ragadjunk
-    # a "max_fuel"-t 3-ra állítja
     if(random.randrange(1, 101) <= tech_map[location]):
         shop_equipment.append("small tank")
-        shop_equipment_prices.append(5)
-    # a "max_fuel"-t 4-re állítja
+        shop_equipment_prices.append(4)
     if(random.randrange(1, 101) <= tech_map[location]):
         shop_equipment.append("medium tank")
-        shop_equipment_prices.append(10)
-    # a "max_fuel"-t 6-ra állítja
+        shop_equipment_prices.append(8)
     if(random.randrange(1, 101) <= tech_map[location]):
         shop_equipment.append("large tank")
-        shop_equipment_prices.append(20)   
+        shop_equipment_prices.append(16)   
 
     shop_has_been_generated = True
 
@@ -339,7 +342,25 @@ def add_new_planet():
 
 # a felszereléseink hatásait végrehajtja
 def utilize_equipment():
-    ...
+    global chance_of_explosion
+    global max_goods
+    global chance_of_winning
+    global max_fuel
+    if("docking unit" in equipment): chance_of_explosion = 0
+    # a tolmácsgép hatása a sell_goods() metódusban látható
+    if("container" in equipment):
+        max_goods = 5 + (4 * equipment.count("container"))
+
+    chance_of_winning = 0
+    if("armor" in equipment): chance_of_winning += 10
+    if("plasma cannon" in equipment): chance_of_winning += 20
+    if("advanced missile launcher" in equipment): chance_of_winning += 30
+    if("rechargable alien energy shield" in equipment): chance_of_winning += 40
+
+    # 3 féle üzemanyagtartály van, ezeknek az az előnye, hogy nagyobb távolságot tudunk utazni, és jobban elkerülhetjük hogy egy bolygón ragadjunk
+    if("small tank" in equipment and max_fuel < 3): max_fuel = 3
+    if("medium tank" in equipment and max_fuel < 4): max_fuel = 4
+    if("large tank" in equipment and max_fuel < 6): max_fuel = 6
 
 # visszatér egy olyan térképpel ami mutatja hol vagyunk jelenleg, és technikaifejlettség alapján színkódol
 def gps():
@@ -381,9 +402,12 @@ def sell_goods():
     global credits_gained
     if(0 < goods):
         goods_sold = goods
-        credits_gained = goods_sold * round(random.randrange(9, 16) * 0.1, 3)
+        if("translation device" in equipment):
+            credits_gained = round(goods_sold * random.randrange(90, 151) * 0.01, 3)
+        else:
+            credits_gained = round(goods_sold * random.randrange(105, 166) * 0.01, 3)
         goods -= goods_sold
-        credits += round(credits_gained, 3)
+        credits += credits_gained
         goods_have_just_been_sold = True
 
 def set_chance_of_explosion():
