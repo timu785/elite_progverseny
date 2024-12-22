@@ -402,8 +402,11 @@ def sell_goods():
         goods_sold = goods
         # minnél több konténerünk van, annál több a profit árueladáskor
         # a profit mennyisége eltérő mint a feladatleírásban, hogy gyorsabb legyen a játék, de a képlet ugyanaz
-        # [-10; +50]% árrés helyett [-10; +90]%   és   egy tolmácsgép nem +15% hanem +50% 
-        credits_gained = round(goods_sold * random.randrange(90 + (15 * equipment.count("translation device")), 151 + (15 * equipment.count("translation device"))) * 0.01, 3)
+
+        # [-10; +50]% árrés    és   egy tolmácsgép +15% 
+        #credits_gained = round(goods_sold * random.randrange(90 + (15 * equipment.count("translation device")), 151 + (15 * equipment.count("translation device"))) * 0.01, 3)
+        # [-10; +100]% árrés   és   egy tolmácsgép +50%
+        credits_gained = round(goods_sold * random.randrange(90 + (50 * equipment.count("translation device")), 201 + (50 * equipment.count("translation device"))) * 0.01, 3)
         goods -= goods_sold
         credits += credits_gained
         goods_have_just_been_sold = True
