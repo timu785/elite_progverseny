@@ -9,7 +9,7 @@ chance_of_explosion:int=30
 fuel:int = 2
 # az üzemanyagtartály mérete, a jelenlegi üzemanagy + venni kívánt üzemanyag ezt nem haladhatja meg
 max_fuel:int = 2
-credits:float = random.randrange(10, 17)
+credits:float = random.randrange(15, 22)
 # áru
 goods:int = 0
 max_goods:int = 5
@@ -180,8 +180,8 @@ def buy():
             # ha nincs elég pénzünk
             if(shop_equipment_prices[shop_equipment.index(to_buy)] > credits):
                 print("\n---you don't have enough credits---\n")
-            # csak konténerből lehet többet venni, vagyis HA a venni kívánt tárgy nem konténer ÉS már vettünk belőle, AKKOR nem vehetünk
-            if((to_buy != "container") and (to_buy in equipment)):
+            # csak konténerből és tolmácsgépből lehet többet venni, vagyis HA a venni kívánt tárgy nem konténer, nem tolmácsgép ÉS már vettünk belőle, AKKOR nem vehetünk
+            if((to_buy != "container") and (to_buy != "translation device") and (to_buy in equipment)):
                 print("\n---you already have this equipment---\n")
             # ha a venni kívánt tanknál van már egy nagyobb tankunk, akkor nem vehetjük meg
             if(
@@ -400,10 +400,7 @@ def sell_goods():
     global credits_gained
     if(0 < goods):
         goods_sold = goods
-        if("translation device" in equipment):
-            credits_gained = round(goods_sold * random.randrange(90, 151) * 0.01, 3)
-        else:
-            credits_gained = round(goods_sold * random.randrange(105, 166) * 0.01, 3)
+        credits_gained = round(goods_sold * random.randrange(90 + (15 * equipment.count("translation device")), 151 + (15 * equipment.count("translation device"))) * 0.01, 3)
         goods -= goods_sold
         credits += credits_gained
         goods_have_just_been_sold = True

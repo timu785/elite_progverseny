@@ -2,6 +2,12 @@ import met
 import random
 import math
 
+
+list:str = ["alma", "korte", "barack", "barack"]
+print(15 * list.count("barack"))
+print(15 * list.count("gyumolcs leves"))
+
+'''
 shop_items:str = ["alma", "korte", "barack"]
 shop_prices:int = [10, 20, 30]
 print(shop_items)
@@ -16,7 +22,7 @@ del shop_items[shop_items.index(to_buy)]
 
 print(shop_items)
 print(shop_prices)
-
+'''
 
 '''
 #  0.9  és  1.5
