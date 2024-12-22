@@ -18,7 +18,7 @@ goods_sold:int
 credits_gained:float
 # a felszereléseink
 equipment:str = []
-# a bolt tárgyai
+# a bolt készlete
 shop_fuel:int
 shop_goods:int
 shop_equipment:str = []
@@ -98,7 +98,7 @@ def travel():
                 if(chance_of_explosion != 0): chance_of_explosion -= 1
                 # sikeres utazásnál automatikusan eladjuk az árut
                 sell_goods()
-                # utazás után a boltot újra lehet generálni, mert egy új bolygón vagyunk/eltelt idő és a már meglátogatott bolygók készletei frissültek
+                # utazás után a boltot újra lehet generálni, mert egy új bolygón vagyunk/a már meglátogatott bolygók készletei frissültek az idő teltével
                 shop_has_been_generated = False
     else:
         print("\n---destination does not exist---\n")
@@ -111,6 +111,9 @@ def buy():
     global shop_goods
     global fuel
     global goods
+    global equipment
+    global shop_equipment
+    global shop_equipment_prices
     if(shop_has_been_generated == False):
         generate_shop()
     print("shop items:\n")
@@ -119,8 +122,11 @@ def buy():
     for i in range(len(shop_equipment)):
         print(f"{shop_equipment[i]}   ${shop_equipment_prices[i]}")
     to_buy:str=str(input("\nwhat do you want to buy?: "))
+    # üzemanyag vásárlás
     if(to_buy == "fuel"):
         fuel_to_buy:int=int(input("how much fuel do you want to buy?: "))
+        # ennek a felépítésnek az előnye: hogy ha a 3 közül BÁRMELYIK teljesül akkor az else ág nem fut le,  és a 3 közül TÖBB IS teljesülhet
+        # ha a 3 feltételt if, elif, elif, else -el csinálom: akkor CSAK AZ UTOLSÓ teljesülésénél nem fut le az else ág,  és a 3 közül CSAK 1 teljesülhet
         if((fuel_to_buy > credits) or (fuel_to_buy > shop_fuel) or (fuel + fuel_to_buy > max_fuel)):
             if(fuel_to_buy > credits):
                 print("\n---you don't have enough credits---\n")
@@ -134,6 +140,7 @@ def buy():
             credits -= round(fuel_to_buy, 3)
             shop_fuel -= fuel_to_buy
             fuel += fuel_to_buy
+    # áru vásárlás
     elif(to_buy == "goods"):
         goods_to_buy:int=int(input("how many goods do you want to buy?: "))
         if((goods_to_buy > credits) or (goods_to_buy > shop_goods) or (goods + goods_to_buy > max_goods)):
@@ -149,6 +156,44 @@ def buy():
             credits -= round(goods_to_buy, 3)
             shop_goods -= goods_to_buy
             goods += goods_to_buy
+    # felszerelés vásárlás
+    elif(to_buy in shop_equipment):
+        # ebben az if feltételben az alatta lévő 3 if feltétele van ÉS-el összekötve
+        if(
+            (shop_equipment_prices[shop_equipment.index(to_buy)] > credits) or
+            ((to_buy != "container") and (to_buy in equipment)) or
+            (
+                ((to_buy == "medium tank") and ("large tank" in equipment)) or
+                ((to_buy == "small tank") and ("medium tank" in equipment)) or
+                ((to_buy == "small tank") and ("large tank" in equipment))
+            )
+        ):
+            # ha nincs elég pénzünk
+            if(shop_equipment_prices[shop_equipment.index(to_buy)] > credits):
+                print("\n---you don't have enough credits---\n")
+                print("Press Enter to continue.")
+            # csak konténerből lehet többet venni, vagyis HA a venni kívánt tárgy nem konténer ÉS már vettünk belőle, AKKOR nem vehetünk
+            if((to_buy != "container") and (to_buy in equipment)):
+                print("\n---you already have this equipment---\n")
+                print("Press Enter to continue.")
+            # ha a venni kívánt tanknál van már egy nagyobb tankunk, akkor nem vehetjük meg
+            if(
+                ((to_buy == "medium tank") and ("large tank" in equipment)) or
+                ((to_buy == "small tank") and ("medium tank" in equipment)) or
+                ((to_buy == "small tank") and ("large tank" in equipment))
+            ):
+                print("\n---you already have a bigger tank---\n")
+                print("Press Enter to continue.")
+            input()
+        else:
+            equipment.append(to_buy)
+            credits -= round(shop_equipment_prices[shop_equipment.index(to_buy)], 3)
+            del shop_equipment_prices[shop_equipment.index(to_buy)]
+            del shop_equipment[shop_equipment.index(to_buy)]
+    else:
+        print("\n---no such item---\n")
+        print("Press Enter to continue.")
+        input()
 
 def telescope():
     if(telescope_map[location] == True):
@@ -289,6 +334,7 @@ def add_new_planet():
             telescope_map.append(True)
         else: telescope_map.append(False)
 
+# a felszereléseink hatásait végrehajtja
 def utilize_equipment():
     ...
 
@@ -324,13 +370,6 @@ def available_telescopes():
             string += temp + " "
     return string
 
-    '''    
-    string:str = ""
-    for i in range(len(telescope_map)):
-        if(telescope_map[i] == True):
-            string += f"{map[i]}, "
-    return string[:-2]
-    '''
 def sell_goods():
     global goods_have_just_been_sold
     global goods
@@ -343,10 +382,6 @@ def sell_goods():
         goods -= goods_sold
         credits += round(credits_gained, 3)
         goods_have_just_been_sold = True
-
-# formázottan kilistázza a felszereléseinket
-def list_equipment():
-    ...
 
 def set_chance_of_explosion():
     global chance_of_explosion

@@ -2,6 +2,23 @@ import met
 import random
 import math
 
+shop_items:str = ["alma", "korte", "barack"]
+shop_prices:int = [10, 20, 30]
+print(shop_items)
+print(shop_prices)
+
+to_buy:str=str(input("mit akarsz venni?: "))
+
+print(shop_items.index(to_buy))
+# azért kell először az árat áltávolítani, hogy név szerint tudjunk hivatkozni a list indexre utoljára
+del shop_prices[shop_items.index(to_buy)]
+del shop_items[shop_items.index(to_buy)]
+
+print(shop_items)
+print(shop_prices)
+
+
+'''
 #  0.9  és  1.5
 print(round(random.randrange(9, 16) * 0.1, 3))
 print()
@@ -9,7 +26,7 @@ print("(\033[31mThis is red text\033[0m" + " asd")
 print()
 temp:str = "alma"
 print(f"\033[31m{temp}\033[0m")
-
+'''
 
 '''
 int1:int = 10
