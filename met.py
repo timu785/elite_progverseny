@@ -54,7 +54,9 @@ def status():
         goods_have_just_been_sold = False
     print(f"credits:  ${credits}")
     print(f"goods:  {goods}/{max_goods}")
-    if(equipment): print(f"equipment:  {equipment}")
+    if(equipment):
+        print("equipment:")
+        print_equipment()
     print("----------------------------------------------------")
     print(f"days left: {100}")
     print(f"chances of winning: {0}%")
@@ -402,6 +404,18 @@ def set_credits():
     global credits
     a:float = float(input("set credits to: "))
     credits = round(a, 3)
+
+# kiírja a felszereléseinket, a "legjobbakat" magentában, és minden 5. elemenként új sort kezd
+def print_equipment():
+    for i in range(len(equipment)):
+        if(equipment[i] == "advanced missile launcher" or
+           equipment[i] == "rechargable alien energy shield" or
+           equipment[i] == "large tank"):
+            print(f"\033[35m{equipment[i]}\033[0m    ", end="")
+        else:
+            print(f"{equipment[i]}    ", end="")
+        if(i in [4, 9, 14, 19, 24, 29]): print()
+    print()
 
 # kiírja a bolt felszereléseit, a "legjobbakat" magentában
 def print_shop_equipment():
