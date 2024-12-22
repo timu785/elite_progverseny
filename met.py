@@ -39,12 +39,12 @@ def status():
     global goods_have_just_been_sold
     utilize_equipment()
     clear_screen()
-    print(">>>>>------------------STATUS------------------<<<<<")
+    print(">>>>>---------------------------- S T A T U S ----------------------------<<<<<")
     if(chance_of_explosion != 0): print(f"change of explosion on landing:  {chance_of_explosion}%")
     print(f"fuel:  {fuel}/{max_fuel}")
     #print(f"location: {map[location]}")
     #print(f"map: {map}")
-    print(f"map:  {gps()}")
+    print(f"gps:  {gps()}")
     #print(f"tech map:  {tech_map}")
     print(f"available telescopes:  {available_telescopes()}")
     #print(f"avarage tech level:  {tech_map_avarage()}")
@@ -86,7 +86,6 @@ def travel():
             input()
         else:
             if(random.randrange(1, 101) <= chance_of_explosion):
-                clear_screen()
                 print("\nGAME OVER: you exploded\n")
                 print("Press Enter to exit...")
                 input()
@@ -119,11 +118,13 @@ def buy():
     print("shop items:\n")
     print(f"{shop_fuel} fuel   $1 per piece")
     print(f"{shop_goods} goods   $1 per piece\n")
-    for i in range(len(shop_equipment)):
-        print(f"{shop_equipment[i]}   ${shop_equipment_prices[i]}")
+    print_shop_equipment()
     to_buy:str=str(input("\nwhat do you want to buy?: "))
+    # semmi vásárlása
+    if(to_buy == "nothing"):
+        ...
     # üzemanyag vásárlás
-    if(to_buy == "fuel"):
+    elif(to_buy == "fuel"):
         fuel_to_buy:int=int(input("how much fuel do you want to buy?: "))
         # ennek a felépítésnek az előnye: hogy ha a 3 közül BÁRMELYIK teljesül akkor az else ág nem fut le,  és a 3 közül TÖBB IS teljesülhet
         # ha a 3 feltételt if, elif, elif, else -el csinálom: akkor CSAK AZ UTOLSÓ teljesülésénél nem fut le az else ág,  és a 3 közül CSAK 1 teljesülhet
@@ -401,6 +402,10 @@ def set_credits():
     global credits
     a:float = float(input("set credits to: "))
     credits = round(a, 3)
+
+def print_shop_equipment():
+    for i in range(len(shop_equipment)):
+        print(f"{shop_equipment[i]}   ${shop_equipment_prices[i]}")
 
 # kiszámolja a technikaifejlettség átlagát, a 0 vagyis űr mezőket nem beleértve, és felfelé kerekíti
 def tech_map_avarage():
