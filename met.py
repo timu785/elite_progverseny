@@ -9,7 +9,7 @@ chance_of_explosion:int=30
 fuel:int = 2
 # az üzemanyagtartály mérete, a jelenlegi üzemanagy + venni kívánt üzemanyag ezt nem haladhatja meg
 max_fuel:int = 2
-credits:float = 10
+credits:float = random.randrange(10, 17)
 # áru
 goods:int = 0
 max_goods:int = 5
@@ -229,14 +229,14 @@ def generate_shop():
     if(5 < temp): temp = 5
     shop_fuel = temp
 
-    # árú random generálása 0 és 20 között (1 és 21 között, utána kivonunk egyet), a technikaifejlettségtől függően
-    x = 15 / 21
-    min = math.ceil(tech_map[location] / x) - 4
-    max = math.ceil(tech_map[location] / x) + 4
+    # árú random generálása 0 és 40 között (1 és 41 között, utána kivonunk egyet), a technikaifejlettségtől függően
+    x = 15 / 41
+    min = math.ceil(tech_map[location] / x) - 5
+    max = math.ceil(tech_map[location] / x) + 5
     temp:int = random.randrange(min, max + 1)
     if(temp < 1): temp = 1
-    # a felső limit opcionális, ettől még 1 és 21 között lesz a randomgenerálás közepe (tech_map[location] / x), de ha 21 fölé esik akkor nem vágódik le
-    #if(21 < temp): temp = 21
+    # a felső limit opcionális, ettől még 1 és 41 között lesz a randomgenerálás közepe (tech_map[location] / x), de ha 41 fölé esik akkor nem vágódik le
+    #if(41 < temp): temp = 41
     temp -= 1
     shop_goods = temp
 
@@ -278,15 +278,15 @@ def generate_shop():
     # a "max_fuel"-t 3-ra állítja
     if(random.randrange(1, 101) <= tech_map[location]):
         shop_equipment.append("small tank")
-        shop_equipment_prices.append(10)
+        shop_equipment_prices.append(5)
     # a "max_fuel"-t 4-re állítja
     if(random.randrange(1, 101) <= tech_map[location]):
         shop_equipment.append("medium tank")
-        shop_equipment_prices.append(15)
-    # a "max_fuel"-t 5-re állítja
+        shop_equipment_prices.append(10)
+    # a "max_fuel"-t 6-ra állítja
     if(random.randrange(1, 101) <= tech_map[location]):
         shop_equipment.append("large tank")
-        shop_equipment_prices.append(25)   
+        shop_equipment_prices.append(20)   
 
     shop_has_been_generated = True
 
