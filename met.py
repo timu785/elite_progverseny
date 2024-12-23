@@ -26,17 +26,18 @@ shop_equipment_prices:int = []
 shop_has_been_generated:bool = False
 # hol vagyunk a térképen, vagyis a térkép lista indexe
 location:int = 0
+
+# ez a 3 változó helyett lehetne osztályt használni
 # térkép, vagyis bolygók listája, az űrt 3*_-al jelöljük
 map:str = ["Thorodin", "Ydalir", "Vidar", "___", "Folkvang"]
-# Technikaifejlettség, min 1 és max 15, az űrt 0-val jelöljük
-# a map-al "együtt műkődik" szóval a map[0] bolygó technikaifejlettsége ennek a listának a [0] eleme
+# technikaifejlettség, min 1 és max 15, az űrt 0-val jelöljük
 tech_map:int = [2, 4, 10, 0, 6]
 # az adott indexű bolygónak van-e teleszkópja
-# a map-al "együtt működik"
 telescope_map:bool = [False, False, False, False, True]
+
 chance_of_winning:int
 # maradt napok száma, utazásonként csökken 1-el
-days_left:int = random.randrange(20, 31)
+days_left:int = random.randrange(15, 26)
 
 
 def status():
@@ -281,7 +282,7 @@ def generate_shop():
 
     if(random.randrange(1, 101) <= tech_map[location]):
         shop_equipment.append("small tank")
-        shop_equipment_prices.append(4)
+        shop_equipment_prices.append(3)
     if(random.randrange(1, 101) <= tech_map[location]):
         shop_equipment.append("medium tank")
         shop_equipment_prices.append(8)
@@ -403,9 +404,9 @@ def sell_goods():
         # minnél több konténerünk van, annál több a profit árueladáskor
         # a profit mennyisége eltérő mint a feladatleírásban, hogy gyorsabb legyen a játék, de a képlet ugyanaz
 
-        # [-10; +50]% árrés    és   egy tolmácsgép +15% 
+        # [-10; +50]% árrés  és egy tolmácsgép +15%-al növeli
         #credits_gained = round(goods_sold * random.randrange(90 + (15 * equipment.count("translation device")), 151 + (15 * equipment.count("translation device"))) * 0.01, 3)
-        # [-10; +100]% árrés   és   egy tolmácsgép +50%
+        # [-10; +100]% árrés és egy tolmácsgép +50%-al növeli
         credits_gained = round(goods_sold * random.randrange(90 + (50 * equipment.count("translation device")), 201 + (50 * equipment.count("translation device"))) * 0.01, 3)
         goods -= goods_sold
         credits += credits_gained
