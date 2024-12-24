@@ -40,6 +40,13 @@ chance_of_winning:int
 days_left:int = random.randrange(15, 26)
 
 
+# a játékban minden egyes input-ra be van állítva Enter vagyis "" string, mondhatni alapértelmezett opció.
+# ez például yes/no esetekben a yes funkciója,
+# üzemenyag és árú vásárlás esetében a lehető legtöbbet vesz amennyi elfér, van a boltban, és van rá pénzünk
+# a csalóparancsok esetében egy alapértelmezett logikus érték (0, 200, 1000)
+# ezzel kényelmesebbé válik a játékmenet, és egyben azt is elkerüljük, hogy az int bekéréseknél string inputra ne záródjon be a program
+
+
 def status():
     global goods_have_just_been_sold
     utilize_equipment()
@@ -55,12 +62,12 @@ def status():
     #print(f"avarage tech level:  {tech_map_avarage()}")
     print("----------------------------------------------------")
     if(goods_have_just_been_sold):
-        print(f"\n{goods_sold} goods sold for {credits_gained} credits\n")
+        print(f"{goods_sold} goods sold for ${credits_gained}\n")
         goods_have_just_been_sold = False
     print(f"credits:  ${round(credits, 3)}")
     print(f"goods:  {goods}/{max_goods}")
     if(equipment):
-        print("equipment:")
+        print("equipment:   ", end = "")
         print_equipment()
     print("----------------------------------------------------")
     print(f"days left: {days_left}")
@@ -94,7 +101,8 @@ def travel():
             input()
         else:
             if(random.randrange(1, 101) <= chance_of_explosion):
-                print("\nGAME OVER: you exploded\n")
+                clear_screen()
+                print("\nGAME OVER: You failed the landing, your ship exploded.\n")
                 print("Press Enter to exit...")
                 input()
                 exit()
@@ -205,10 +213,18 @@ def buy():
         input()
 
 def telescope():
+    global credits
     if(telescope_map[location] == True):
-        print("do you want to use the telescope for $10? (yes/no): ")
-        print("Press Enter to continue.")
-        input()
+        inputtext:str = str(input("do you want to use the telescope for $5? (yes/no): "))
+        if(inputtext == "yes" or inputtext == ""):
+            credits -= 5
+            add_new_planet()
+        elif(inputtext == "no"):
+            ...
+        else:
+            print("\n---must be a yes or no answer.---\n")
+            print("Press Enter to continue.")
+            input()
     else:
         print("\n---this planet doesn't have a telescope---\n")
         print("Press Enter to continue.")

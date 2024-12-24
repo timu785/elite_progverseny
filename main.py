@@ -1,17 +1,18 @@
-# A játékot ajánlott cmd-ben futtatni!
-
 # ötletek
-# a gps-en a bolygók a tech_level-hez megfelelő színűek, minnél magassabb annál zöldebb például
-# felfedezni kreditért lehet, csak bizonyos bolygókon
-# days left
 # the end
-# 4 types of weapons
-# S tartály: át tudunk utazni 2 űrt, M tartály: át tudunk utazni 3 űrt, L tartály: a bolygókon ragadás esélyét csökkenti és kényelem
+# rövidítések, a "" válasz lehetne egy alapvető igen, vagy alap funkció
 
 import met
 
 met.status()
-while(True):   
+while(True):
+    if(met.days_left < 0):
+        met.clear_screen()
+        print("\nGAME OVER: You ran out of time, a nearby star exploded.\n")
+        print("Press Enter to exit...")
+        input()
+        exit()
+
     inputtext:str=str(input("input: "))
     if(inputtext == "travel"):
         met.travel()
