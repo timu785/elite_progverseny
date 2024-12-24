@@ -378,8 +378,8 @@ def utilize_equipment():
 
 # visszatér egy olyan térképpel ami mutatja hol vagyunk jelenleg, és technikaifejlettség alapján színkódol
 def gps():
-    #   0    1-3  4-6    7-9  10-12 13-15
-    # black  red yellow white green cyan
+    #   0    1-3  4-6    7-9  10-12 13-15   The End
+    # black  red yellow white green cyan    Magenta
     string:str = ""
     temp:str
     for i in range(len(map)):
