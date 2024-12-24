@@ -4,6 +4,7 @@ import math
 
 
 list:str = ["alma", "korte", "barack", "barack"]
+print(len(list))
 print(15 * list.count("barack"))
 print(15 * list.count("gyumolcs leves"))
 

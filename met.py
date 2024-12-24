@@ -37,7 +37,9 @@ telescope_map:bool = [False, False, False, False, True]
 chance_of_winning:int
 # maradt napok száma, utazásonként csökken 1-el
 days_left:int = random.randrange(15, 26)
-
+# hanyadik bolygó lesz a "The End"
+the_end_xth_planet:int = random.randrange(10, 21)
+the_end_has_been_generated:bool = False
 
 # a játékban minden egyes input-ra be van állítva Enter vagyis "" string, mondhatni alapértelmezett opció.
 # ez például yes/no esetekben a yes funkciója,
@@ -50,7 +52,7 @@ def status():
     global goods_have_just_been_sold
     utilize_equipment()
     clear_screen()
-    print(">>>>>---------------------------- S T A T U S ----------------------------<<<<<")
+    print(">>>>>-------------------------------------- S T A T U S --------------------------------------<<<<<")
     if(chance_of_explosion != 0): print(f"change of explosion on landing:  {chance_of_explosion}%")
     print(f"fuel:  {fuel}/{max_fuel}")
     #print(f"location: {map[location]}")
@@ -59,7 +61,7 @@ def status():
     #print(f"tech map:  {tech_map}")
     print(f"available telescopes:  {available_telescopes()}")
     #print(f"avarage tech level:  {tech_map_avarage()}")
-    print("----------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------")
     if(goods_have_just_been_sold):
         print(f"{goods_sold} goods sold for ${credits_gained}\n")
         goods_have_just_been_sold = False
@@ -68,13 +70,13 @@ def status():
     if(equipment):
         print("equipment:   ", end = "")
         print_equipment()
-    print("----------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------")
     print(f"days left: {days_left}")
     print(f"chances of winning: {chance_of_winning}%")
-    print("----------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------")
     print("possible inputs:  travel, buy, telescope")
     if(cheats): print("cheat:  /fuel, /credits, /planet, /explosion chance, /cheats")
-    print("----------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------")
 
 def travel():
     global location
@@ -229,7 +231,8 @@ def telescope():
         print("Press Enter to continue.")
         input()
 
-
+def fight():
+    ...
 
 
 
@@ -311,11 +314,18 @@ def generate_shop():
 def add_new_planet():
     global map
     global tech_map
+    global the_end_has_been_generated
     VOWELS:str = ['a', 'e', 'i', 'o', 'u']
     CONSONANTS:str = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
-    if(random.randrange(1,101) <= 40 and (map[-1] != "___" or map[-2] != "___" or map[-3] != "___")):
-        # 40% esélye van, hogy űrt generálunk, ha a "map" utolsó 3 eleme között van bolygó
-        # ennek köszönhetően, ha generálódik 2 vagy 3 űr egymás után, akkor fejlesztenünk kell az üzemanyagtartályt, hogy át tudjuk utazni ezeket
+    # az x-edik bolygó mindig a "The End" lesz.
+    if(len(map) == (the_end_xth_planet - 1)):
+        map.append("The End")
+        tech_map.append(16)
+        telescope_map.append(False)
+        the_end_has_been_generated = True
+    # 40% esélye van, hogy űrt generálunk, ha a "map" utolsó 3 eleme között van bolygó
+    # ennek köszönhetően, ha generálódik 2 vagy 3 űr egymás után, akkor fejlesztenünk kell az üzemanyagtartályt, hogy át tudjuk utazni ezeket
+    elif(random.randrange(1,101) <= 40 and (map[-1] != "___" or map[-2] != "___" or map[-3] != "___")):
         planet_name:str = "___"
         map.append(planet_name)
         tech_map.append(0)
@@ -378,8 +388,8 @@ def utilize_equipment():
 
 # visszatér egy olyan térképpel ami mutatja hol vagyunk jelenleg, és technikaifejlettség alapján színkódol
 def gps():
-    #   0    1-3  4-6    7-9  10-12 13-15   The End
-    # black  red yellow white green cyan    Magenta
+    #   0    1-3  4-6    7-9  10-12 13-15    The End
+    # black  red yellow white green cyan     magenta
     string:str = ""
     temp:str
     for i in range(len(map)):
@@ -390,6 +400,7 @@ def gps():
         if(7 <= tech_map[i] and tech_map[i] <= 9): temp = f"\033[37m{temp}\033[0m"
         if(10 <= tech_map[i] and tech_map[i] <= 12): temp = f"\033[32m{temp}\033[0m"
         if(13 <= tech_map[i] and tech_map[i] <= 15): temp = f"\033[36m{temp}\033[0m"
+        if(map[i] == "The End"): temp = f"\033[35m{temp}\033[0m"
         if(location == i): temp = f"({temp})"
         string += temp + " "
     return string
@@ -446,16 +457,16 @@ def set_credits():
     a:float = float(input("set credits to: "))
     credits = round(a, 3)
 
-# kiírja a felszereléseinket, a "legjobbakat" magentában, és minden 5. elemenként új sort kezd
+# kiírja a felszereléseinket, a "legjobbakat" magentában, és minden 4. elemenként új sort kezd
 def print_equipment():
     for i in range(len(equipment)):
         if(equipment[i] == "advanced missile launcher" or
            equipment[i] == "rechargable alien energy shield" or
            equipment[i] == "large tank"):
-            print(f"\033[35m{equipment[i]}\033[0m    ", end="")
+            print(f"\033[35m{equipment[i]}\033[0m   ", end="")
         else:
-            print(f"{equipment[i]}    ", end="")
-        if(i in [4, 9, 14, 19, 24, 29]): print()
+            print(f"{equipment[i]}   ", end="")
+        if(i in [3, 7, 11, 15, 19, 23] and len(equipment) not in [4, 8, 12, 16, 20, 24]): print()
     print()
 
 # kiírja a bolt felszereléseit, a "legjobbakat" magentában
