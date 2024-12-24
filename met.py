@@ -27,12 +27,11 @@ shop_has_been_generated:bool = False
 # hol vagyunk a térképen, vagyis a térkép lista indexe
 location:int = 0
 
-# ez a 3 változó helyett lehetne osztályt használni
 # térkép, vagyis bolygók listája, az űrt 3*_-al jelöljük
 map:str = ["Thorodin", "Ydalir", "Vidar", "___", "Folkvang"]
-# technikaifejlettség, min 1 és max 15, az űrt 0-val jelöljük
+# az adott indexű bolygó technikaifejlettsége, min 1 és max 15, az űrt 0-val jelöljük
 tech_map:int = [2, 4, 10, 0, 6]
-# az adott indexű bolygónak van-e teleszkópja
+# az adott indexű bolygónak van-e teleszkópja, az űr egyértelműen mindig False
 telescope_map:bool = [False, False, False, False, True]
 
 chance_of_winning:int
