@@ -84,6 +84,11 @@ def travel():
     global chance_of_explosion
     global shop_has_been_generated
     global days_left
+    if(map[location] == "The End"):
+        print("\n---you can't leave this planet---\n")
+        print("Press Enter to continue.")
+        input()
+        return 0
     destination:str = str(input("where do you want to travel?: "))
     if(destination == "___"):
         print("\n---you cant land here---\n")
