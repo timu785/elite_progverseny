@@ -24,6 +24,8 @@ while(True):
         met.buy()
     elif(inputtext == "telescope"):
         met.telescope()
+    elif(inputtext == "fight"):
+        met.fight()
 
     elif(inputtext =="/cheats"):
         met.cheats = not met.cheats

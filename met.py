@@ -74,7 +74,7 @@ def status():
     print(f"days left: {days_left}")
     print(f"chances of winning: {chance_of_winning}%")
     print("---------------------------------------------------------------------------------------------------")
-    print("possible inputs:  travel, buy, telescope")
+    print("possible inputs:  travel, buy, telescope, fight")
     if(cheats): print("cheat:  /fuel, /credits, /planet, /explosion chance, /cheats")
     print("---------------------------------------------------------------------------------------------------")
 
@@ -246,7 +246,23 @@ def telescope():
         input()
 
 def fight():
-    ...
+    if(map[location] == "The End"):
+        if(random.randrange(1, 101) <= chance_of_winning):
+            clear_screen()
+            print("\nGAME WON: You beat the Ender Dragon.\n")
+            print("Press Enter to exit...")
+            input()
+            exit()
+        else:
+            clear_screen()
+            print("\nGAME OVER: You died, fighting the Ender Dragon.\n")
+            print("Press Enter to exit...")
+            input()
+            exit()
+    else:
+        print("\n---there is no enemy to fight here---\n")
+        print("Press Enter to continue.")
+        input()
 
 
 
@@ -439,11 +455,12 @@ def sell_goods():
     global credits
     global goods_sold
     global credits_gained
-    if(0 < goods):
+    if(map[location] == "The End"):
+        ...
+    elif(0 < goods):
         goods_sold = goods
         # minnél több konténerünk van, annál több a profit árueladáskor
         # a profit mennyisége eltérő mint a feladatleírásban, hogy gyorsabb legyen a játék, de a képlet ugyanaz
-
         # [-10; +50]% árrés  és egy tolmácsgép +15%-al növeli
         #credits_gained = round(goods_sold * random.randrange(90 + (15 * equipment.count("translation device")), 151 + (15 * equipment.count("translation device"))) * 0.01, 3)
         # [-10; +100]% árrés és egy tolmácsgép +50%-al növeli
@@ -480,7 +497,9 @@ def print_equipment():
             print(f"\033[35m{equipment[i]}\033[0m   ", end="")
         else:
             print(f"{equipment[i]}   ", end="")
-        if(i in [3, 7, 11, 15, 19, 23] and len(equipment) not in [4, 8, 12, 16, 20, 24]): print()
+        # akkor rakunk sortörést, ha 4 vagy többszöröse db elemnél járunk és ennél öszzesen több elem van
+        # ezzel azt kerüljük el, hogy egy üres sor legyen, amikor pontosan 4 vagy többszöröse db elem van
+        if((i+1) in [4, 8, 12, 16, 20, 24, 28, 32] and (i+1) < len(equipment)): print()
     print()
 
 # kiírja a bolt felszereléseit, a "legjobbakat" magentában
