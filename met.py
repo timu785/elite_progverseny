@@ -131,6 +131,11 @@ def buy():
     global equipment
     global shop_equipment
     global shop_equipment_prices
+    if(map[location] == "The End"):
+        print("\n---there is no shop on this planet---\n")
+        print("Press Enter to continue.")
+        input()
+        return 0
     if(shop_has_been_generated == False):
         generate_shop()
     print("shop items:\n")
