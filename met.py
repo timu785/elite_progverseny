@@ -215,7 +215,11 @@ def buy():
 
 def telescope():
     global credits
-    if(telescope_map[location] == True):
+    if(the_end_has_been_generated == True):
+        print("\n---you have already discovered the final planet---\n")
+        print("Press Enter to continue.")
+        input()
+    elif(telescope_map[location] == True):
         inputtext:str = str(input("do you want to use the telescope for $5? (yes/no): "))
         if(inputtext == "yes" or inputtext == ""):
             credits -= 5
@@ -223,7 +227,7 @@ def telescope():
         elif(inputtext == "no"):
             ...
         else:
-            print("\n---must be a yes or no answer.---\n")
+            print("\n---must be a yes or no answer---\n")
             print("Press Enter to continue.")
             input()
     else:
