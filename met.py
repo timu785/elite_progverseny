@@ -153,7 +153,17 @@ def buy():
         ...
     # üzemanyag vásárlás
     elif(to_buy == "fuel"):
-        fuel_to_buy:int=int(input("how much fuel do you want to buy?: "))
+        while True:
+            user_input = input("how much fuel do you want to buy?: ")
+            try:
+                user_number = int(user_input)
+                break
+            except ValueError:
+                print("\n---not a whole number---\n")
+                print("Press Enter to continue.")
+                input()
+                return 0
+        fuel_to_buy:int = user_number
         # ennek a felépítésnek az előnye: hogy ha a 3 közül BÁRMELYIK teljesül akkor az else ág nem fut le,  és a 3 közül TÖBB IS teljesülhet
         # ha a 3 feltételt if, elif, elif, else -el csinálom: akkor CSAK AZ UTOLSÓ teljesülésénél nem fut le az else ág,  és a 3 közül CSAK 1 teljesülhet
         if((fuel_to_buy > credits) or (fuel_to_buy > shop_fuel) or (fuel + fuel_to_buy > max_fuel)):
@@ -171,7 +181,17 @@ def buy():
             fuel += fuel_to_buy
     # áru vásárlás
     elif(to_buy == "goods"):
-        goods_to_buy:int=int(input("how many goods do you want to buy?: "))
+        while True:
+            user_input = input("how many goods do you want to buy?: ")
+            try:
+                user_number = int(user_input)
+                break
+            except ValueError:
+                print("\n---not a whole number---\n")
+                print("Press Enter to continue.")
+                input()
+                return 0
+        goods_to_buy:int = user_number
         if((goods_to_buy > credits) or (goods_to_buy > shop_goods) or (goods + goods_to_buy > max_goods)):
             if(goods_to_buy > credits):
                 print("\n---you don't have enough credits---\n")

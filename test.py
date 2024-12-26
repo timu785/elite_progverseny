@@ -2,11 +2,33 @@ import met
 import random
 import math
 
+while True:
+    user_input = input("Please enter an integer: ")
+    try:
+        user_number = int(user_input)
+        print(f"Thank you! You entered the integer: {user_number}")
+        break  # Exit the loop if conversion is successful
+    except ValueError:
+        print("That is not a valid integer. Please try again.")
 
+
+
+'''
+inputtext:str = str(input("adjon megy egy szamot: "))
+a:int = int(inputtext)
+a += 1
+print(a)
+'''
+
+
+
+'''
 list:str = ["alma", "korte", "barack", "barack"]
 print(len(list))
 print(15 * list.count("barack"))
 print(15 * list.count("gyumolcs leves"))
+'''
+
 
 '''
 shop_items:str = ["alma", "korte", "barack"]
