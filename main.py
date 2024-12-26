@@ -20,7 +20,7 @@ while(True):
     inputtext:str=str(input("input: "))
     if(inputtext == "travel"):
         met.travel()
-    elif(inputtext == "buy"):
+    elif(inputtext == "buy" or inputtext == ""):
         met.buy()
     elif(inputtext == "telescope"):
         met.telescope()

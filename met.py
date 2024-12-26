@@ -536,6 +536,7 @@ def set_credits():
     if(user_input == ""):
         credits = 1000
     else:
+        # a try except szerkezet szükséges, hogy szöveg bemenetnél ne legyen hiba, és vesszen el a haladás
         try:
             user_number = int(user_input)
             if(user_number < 0):
