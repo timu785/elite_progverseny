@@ -401,7 +401,7 @@ def add_new_planet():
         # generáljuk az új bolygó technikaifejlettségét az átlagos technikaifejlettséghez relatívan random
         # így ahogy generálunk több és több bolygót, egyre magasabb lesz a technikaifejlettségük általában
         min:int = tech_map_avarage() - 6
-        max:int = tech_map_avarage() + 9
+        max:int = tech_map_avarage() + 10
         temp:int = random.randrange(min, max + 1)
         # nem  while(temp < 1 or 15 < temp)
         # ez a módszer jobb, mivel a nagyobb szám generálásának esélye nagyobb lesz, még akkor is ha a max 15 felé esik
