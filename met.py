@@ -491,22 +491,63 @@ def sell_goods():
 
 def set_chance_of_explosion():
     global chance_of_explosion
-    a:int = int(input("set chance of explosion to: "))
-    while(a < 0 or 100 < a):
-        a = int(input("chance of explosion must be from 0 to 100: "))
-    chance_of_explosion = a
+    user_input = input("set chance of explosion to: ")
+    if(user_input == ""):
+        chance_of_explosion = 0
+    else:
+        try:
+            user_number = int(user_input)
+            if(user_number < 0 or 100 < user_number):
+                print("\n---chance of explosion must be from 0 to 100---\n")
+                print("Press Enter to continue.")
+                input()
+            else:
+                chance_of_explosion = user_number
+        except:
+            print("\n---not a whole number---\n")
+            print("Press Enter to continue.")
+            input()
 
 def set_fuel():
     global fuel
     global max_fuel
-    a:int = int(input("set fuel to: "))
-    fuel = a
-    max_fuel = a
+    user_input = input("set fuel to ")
+    if(user_input == ""):
+        fuel = 500
+        max_fuel = 500
+    else:
+        try:
+            user_number = int(user_input)
+            if(user_number < 0):
+                print("\n---fuel must be above 0---\n")
+                print("Press Enter to continue.")
+                input()
+            else:
+                fuel = user_number
+                max_fuel = user_number
+        except:
+            print("\n---not a whole number---\n")
+            print("Press Enter to continue.")
+            input()
 
 def set_credits():
     global credits
-    a:float = float(input("set credits to: "))
-    credits = round(a, 3)
+    user_input = input("set credits to ")
+    if(user_input == ""):
+        credits = 1000
+    else:
+        try:
+            user_number = int(user_input)
+            if(user_number < 0):
+                print("\n---credits must be above 0---\n")
+                print("Press Enter to continue.")
+                input()
+            else:
+                credits = user_number
+        except:
+            print("\n---not a whole number---\n")
+            print("Press Enter to continue.")
+            input()
 
 # kiírja a felszereléseinket, a "legjobbakat" magentában, és minden 4. elemenként új sort kezd
 def print_equipment():
