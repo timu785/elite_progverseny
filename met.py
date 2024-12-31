@@ -155,6 +155,14 @@ def buy():
     elif(to_buy == "fuel"):
         while True:
             user_input = input("how much fuel do you want to buy?: ")
+            if(user_input == ""):
+                # annyi üzemanyagot veszünk amennyit tudunk, vagyis
+                # min(amennyi pénzünk van, amennyi van a boltban, amennyi elfér)
+                fuel_to_buy:int = min([int(credits), shop_fuel, max_fuel-fuel])
+                credits -= round(fuel_to_buy, 3)
+                shop_fuel -= fuel_to_buy
+                fuel += fuel_to_buy
+                return 0
             try:
                 user_number = int(user_input)
                 break

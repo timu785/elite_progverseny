@@ -2,6 +2,20 @@ import met
 import random
 import math
 
+a:float = 5.5
+b:int = 7
+c:int = 9
+list = [a, b, c]
+print(type(list[0]))
+print(type(list[1]))
+print(type(list[2]))
+print(list)
+print(int(min(list)))
+
+
+
+
+'''
 while True:
     user_input = input("Please enter an integer: ")
     try:
@@ -10,8 +24,7 @@ while True:
         break  # Exit the loop if conversion is successful
     except ValueError:
         print("That is not a valid integer. Please try again.")
-
-
+'''
 
 '''
 inputtext:str = str(input("adjon megy egy szamot: "))
