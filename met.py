@@ -90,7 +90,9 @@ def travel():
         input()
         return 0
     destination:str = str(input("where do you want to travel?: "))
-    if(destination == "___"):
+    if(destination == ""):
+        return 0
+    elif(destination == "___"):
         print("\n---you cant land here---\n")
         print("Press Enter to continue.")
         input()
