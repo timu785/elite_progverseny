@@ -191,6 +191,14 @@ def buy():
     elif(to_buy == "goods"):
         while True:
             user_input = input("how many goods do you want to buy?: ")
+            if(user_input == ""):
+                # annyi árut veszünk amennyit tudunk, vagyis
+                # min(amennyi pénzünk van, amennyi van a boltban, amennyi elfér)
+                goods_to_buy:int = min([int(credits), shop_goods, max_goods-goods])
+                credits -= round(goods_to_buy, 3)
+                shop_goods -= goods_to_buy
+                goods += goods_to_buy
+                return 0            
             try:
                 user_number = int(user_input)
                 break
