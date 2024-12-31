@@ -149,7 +149,7 @@ def buy():
     print_shop_equipment()
     to_buy:str=str(input("\nwhat do you want to buy?: "))
     # semmi vásárlása
-    if(to_buy == "nothing"):
+    if(to_buy == "nothing" or to_buy == ""):
         ...
     # üzemanyag vásárlás
     elif(to_buy == "fuel"):
