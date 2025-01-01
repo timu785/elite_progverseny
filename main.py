@@ -1,7 +1,4 @@
 # to do:
-# the end
-# rövidítések, a "" válasz lehetne egy alapvető igen, vagy alap funkció
-# az int inputok kifagyasztják a programot szöveges inputtal
 # kommentek tisztítása
 # változók és metódukso tisztítása
 # kód átnázáse és tiszítása

@@ -26,26 +26,19 @@ shop_equipment_prices:int = []
 shop_has_been_generated:bool = False
 # hol vagyunk a térképen, vagyis a térkép lista indexe
 location:int = 0
-
 # térkép, vagyis bolygók listája, az űrt 3*_-al jelöljük
 map:str = ["Thorodin", "Ydalir", "Vidar", "___", "Folkvang"]
 # az adott indexű bolygó technikaifejlettsége, min 1 és max 15, az űrt 0-val jelöljük
 tech_map:int = [2, 4, 10, 0, 6]
 # az adott indexű bolygónak van-e teleszkópja, az űr egyértelműen mindig False
 telescope_map:bool = [False, False, False, False, True]
-
+# a nyerés esélye százalékban
 chance_of_winning:int
 # maradt napok száma, utazásonként csökken 1-el
 days_left:int = random.randrange(15, 26)
 # hanyadik bolygó lesz a "The End"
 the_end_xth_planet:int = random.randrange(10, 21)
 the_end_has_been_generated:bool = False
-
-# a játékban minden egyes input-ra be van állítva Enter vagyis "" string, mondhatni alapértelmezett opció.
-# ez például yes/no esetekben a yes funkciója,
-# üzemenyag és árú vásárlás esetében a lehető legtöbbet vesz amennyi elfér, van a boltban, és van rá pénzünk
-# a csalóparancsok esetében egy alapértelmezett logikus érték (0, 200, 1000)
-# ezzel kényelmesebbé válik a játékmenet, és egyben azt is elkerüljük, hogy az int bekéréseknél string inputra ne záródjon be a program
 
 
 def status():
