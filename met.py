@@ -35,7 +35,7 @@ chance_of_explosion:int=30
 # a nyerés esélye százalékban, majd a utilize_equipment() metódus ad neki értéket
 chance_of_winning:int
 # maradt napok száma, utazásonként csökken 1-el
-days_left:int = random.randrange(15, 26)
+days_left:int = random.randrange(12, 16)
 # hanyadik bolygó lesz a "The End"
 the_end_xth_planet:int = random.randrange(10, 21)
 # ennek segítségével nem fedezhetünk fel több bolygót, ha már felfedeztük az utolsót
