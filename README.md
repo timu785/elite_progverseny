@@ -10,7 +10,7 @@ Amit tudni érdemes a programról, az Elite.docx-ben leírtakon kívül:
 
 -Random, hogy mennyi pénzzel kezdünk, mennyi napunk maradt, és mikor fedezzük fel az utolsó bolygót.
 
--Utazásonként eltelik 1 nap, és ki lehet futni az időből.
+-Utazásonként eltelik 1 nap, és ki lehet futni az időből. Ha kevés idő maradt, akkor sárgán vagy pirosan jelenik meg.
 
 -Új bolygókat teleszkóppal tudunk felfedezni, amik csak bizonyos bolygókon vannak (a bolygó fejlettségétől függően).
 
@@ -26,4 +26,4 @@ Amit tudni érdemes a programról, az Elite.docx-ben leírtakon kívül:
 
 -A játékban lehet aktiválni csalókódokat, ha beírjuk azt hogy "/cheats"
 
--Minden egyes bemenetnek van egy alapfunkciója, amit úgy érünk el, hogy nem írunk be semmi és csak Enter-t nyomunk.
+-Minden egyes bemenetnek van egy "alapfunkciója", amit úgy érünk el, hogy nem írunk be semmi és csak Enter-t nyomunk. Például üzemanyag és áru vételnél ez az, hogy annyi veszünk amennyit csak tudunk.

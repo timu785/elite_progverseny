@@ -4,26 +4,12 @@ import os
 
 cheats:bool = False
 
-# százalékban, a landoláskor való felrobbanás esélye
-chance_of_explosion:int=30
 fuel:int = 2
-# az üzemanyagtartály mérete, a jelenlegi üzemanagy + venni kívánt üzemanyag ezt nem haladhatja meg
 max_fuel:int = 2
 credits:float = random.randrange(15, 41)
-# áru
 goods:int = 0
 max_goods:int = 5
-goods_have_just_been_sold:bool = False
-goods_sold:int
-credits_gained:float
-# a felszereléseink
 equipment:str = []
-# a bolt készlete
-shop_fuel:int
-shop_goods:int
-shop_equipment:str = []
-shop_equipment_prices:int = []
-shop_has_been_generated:bool = False
 # hol vagyunk a térképen, vagyis a térkép lista indexe
 location:int = 0
 # térkép, vagyis bolygók listája, az űrt 3*_-al jelöljük
@@ -32,12 +18,27 @@ map:str = ["Thorodin", "Ydalir", "Vidar", "___", "Folkvang"]
 tech_map:int = [2, 4, 10, 0, 6]
 # az adott indexű bolygónak van-e teleszkópja, az űr egyértelműen mindig False
 telescope_map:bool = [False, False, False, False, True]
-# a nyerés esélye százalékban
+shop_fuel:int
+shop_goods:int
+shop_equipment:str = []
+shop_equipment_prices:int = []
+# ennek segítségéven csak akkor generálódik új készlet, ha utaztunk
+shop_has_been_generated:bool = False
+# egy eladáskor az eladott áruk száma
+goods_sold:int
+# egy eladáskor a kapott kredit száma
+credits_gained:float
+# a status() metódusban ennek segítségéven íratjuk ki pontosan egyszer, utazás után az eladás adatait
+goods_have_just_been_sold:bool = False
+# százalékban, a landoláskor való felrobbanás esélye
+chance_of_explosion:int=30
+# a nyerés esélye százalékban, majd a utilize_equipment() metódus ad neki értéket
 chance_of_winning:int
 # maradt napok száma, utazásonként csökken 1-el
 days_left:int = random.randrange(15, 26)
 # hanyadik bolygó lesz a "The End"
 the_end_xth_planet:int = random.randrange(10, 21)
+# ennek segítségével nem fedezhetünk fel több bolygót, ha már felfedeztük az utolsót
 the_end_has_been_generated:bool = False
 
 
@@ -50,8 +51,8 @@ def status():
     print(f"fuel:  {fuel}/{max_fuel}")
     #print(f"location: {map[location]}")
     #print(f"map: {map}")
-    print(f"gps:  {gps()}")
     #print(f"tech map:  {tech_map}")
+    print(f"gps:  {gps()}")
     print(f"available telescopes:  {available_telescopes()}")
     #print(f"avarage tech level:  {tech_map_avarage()}")
     print("---------------------------------------------------------------------------------------------------")
@@ -64,7 +65,7 @@ def status():
         print("equipment:   ", end = "")
         print_equipment()
     print("---------------------------------------------------------------------------------------------------")
-    print(f"days left: {days_left}")
+    print(f"days left: {days_left_colorized()}")
     print(f"chances of winning: {chance_of_winning}%")
     print("---------------------------------------------------------------------------------------------------")
     print("possible inputs:  travel, buy, telescope, fight")
@@ -108,8 +109,8 @@ def travel():
                 input()
                 exit()
             else:
-                # utazunk, vagyis a helyt átállítjuk a cél helyére
-                location=map.index(destination)
+                # utazunk, vagyis a helyt átállítjuk a célpontra
+                location = map.index(destination)
                 fuel -= fuelconsumption
                 if(chance_of_explosion != 0): chance_of_explosion -= 1
                 days_left -= 1
@@ -218,7 +219,7 @@ def buy():
             goods += goods_to_buy
     # felszerelés vásárlás
     elif(to_buy in shop_equipment):
-        # ebben az if feltételben az alatta lévő 3 if feltétele van ÉS-el összekötve
+        # ebben az if feltételben az alatta lévő 3 if feltétele van VAGY-al összekötve
         if(
             (shop_equipment_prices[shop_equipment.index(to_buy)] > credits) or
             ((to_buy != "container") and (to_buy != "translation device") and (to_buy in equipment)) or
@@ -231,7 +232,7 @@ def buy():
             # ha nincs elég pénzünk
             if(shop_equipment_prices[shop_equipment.index(to_buy)] > credits):
                 print("\n---you don't have enough credits---\n")
-            # csak konténerből és tolmácsgépből lehet többet venni, vagyis HA a venni kívánt tárgy nem konténer, nem tolmácsgép ÉS már vettünk belőle, AKKOR nem vehetünk
+            # csak konténerből és tolmácsgépből lehet többet venni,  vagyis HA a venni kívánt tárgy nem konténer ÉS nem tolmácsgép ÉS már vettünk belőle, AKKOR nem vehetünk
             if((to_buy != "container") and (to_buy != "translation device") and (to_buy in equipment)):
                 print("\n---you already have this equipment---\n")
             # ha a venni kívánt tanknál van már egy nagyobb tankunk, akkor nem vehetjük meg
@@ -425,7 +426,7 @@ def add_new_planet():
             telescope_map.append(True)
         else: telescope_map.append(False)
 
-# a felszereléseink hatásait végrehajtja
+# a felszereléseink hatásait végrehajtja,  kivéve a tolmácsgépét, az a sell_goods() metódusban látható
 def utilize_equipment():
     global chance_of_explosion
     global max_goods
@@ -585,6 +586,12 @@ def print_shop_equipment():
         else:
             print(f"{shop_equipment[i]}   ${shop_equipment_prices[i]}")
 
+# visszatér a maradt napok számával, színkódolva
+def days_left_colorized():
+    if(days_left <= 4): return f"\033[31m{days_left}\033[0m"
+    elif(days_left <= 8): return f"\033[33m{days_left}\033[0m"
+    else: return days_left
+
 # kiszámolja a technikaifejlettség átlagát, a 0 vagyis űr mezőket nem beleértve, és felfelé kerekíti
 def tech_map_avarage():
     filtered_list:int=[]
@@ -592,7 +599,6 @@ def tech_map_avarage():
         if(tech_map[i] != 0): filtered_list.append(tech_map[i])
     return math.ceil(sum(filtered_list) / len(filtered_list))
 
-# operációs rendszerhez alkalmazkodó képernyő tisztító (teljesen a ChatGPT generálta)
 def clear_screen():
     # Check the operating system
     if os.name == 'nt':  # For Windows
