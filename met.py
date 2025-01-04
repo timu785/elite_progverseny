@@ -56,14 +56,14 @@ def status():
     print(f"available telescopes:  {available_telescopes()}")
     #print(f"avarage tech level:  {tech_map_avarage()}")
     print("-----------------------------------------------------------------------------------------------------------")
-    print(f"credits:  ${round(credits, 3)}", end = "")
+    print(f"credits:  ${round(credits, 3)}", end="")
     if(goods_have_just_been_sold):
-        print(f"      \033[32m{goods_sold} goods sold for ${credits_gained}\033[0m", end = "")
+        print(f"      \033[32m{goods_sold} goods sold for ${credits_gained}\033[0m", end="")
         goods_have_just_been_sold = False
     print()
     print(f"goods:  {goods}/{max_goods}")
     if(equipment):
-        print("equipment:   ", end = "")
+        print("equipment:   ", end="")
         print_equipment()
     print("-----------------------------------------------------------------------------------------------------------")
     print(f"days left: {days_left_colorized()}")
@@ -563,7 +563,7 @@ def set_credits():
             print("Press Enter to continue.")
             input()
 
-# kiírja a felszereléseinket, a "legjobbakat" magentában, és minden 4. elemenként új sort kezd
+# kiírja a felszereléseinket, a "legjobbakat" magentában, és minden 4. elemenként rak sortörést és behúzást
 def print_equipment():
     for i in range(len(equipment)):
         if(equipment[i] == "advanced missile launcher" or
@@ -572,9 +572,9 @@ def print_equipment():
             print(f"\033[35m{equipment[i]}\033[0m   ", end="")
         else:
             print(f"{equipment[i]}   ", end="")
-        # akkor rakunk sortörést, ha 4 vagy többszöröse db elemnél járunk és ennél öszzesen több elem van
-        # ezzel azt kerüljük el, hogy egy üres sor legyen, amikor pontosan 4 vagy többszöröse db elem van
-        if((i+1) in [4, 8, 12, 16, 20, 24, 28, 32] and (i+1) < len(equipment)): print()
+        # akkor rakunk sortörést és behúzást, ha [4 vagy többszöröse] db elemnél járunk VISZONT ennél öszzesen több elem van
+        # ezzel azt kerüljük el, hogy egy üres sor legyen, amikor pontosan [4 vagy többszöröse] db elem van
+        if((i+1) in [4, 8, 12, 16, 20, 24, 28, 32] and (i+1) < len(equipment)): print(f"\n             ", end="")
     print()
 
 # kiírja a bolt felszereléseit, a "legjobbakat" magentában
