@@ -14,7 +14,9 @@ Amit tudni érdemes a programról, az Elite.docx-ben leírtakon kívül:
 
 -Új bolygókat teleszkóppal tudunk felfedezni, amik csak bizonyos bolygókon vannak (a bolygó fejlettségétől függően).
 
--A boltok készlete random és az adott bolygó technikaifejlettségétől függ, minnél fejlettebb egy bolygó annál jobb a készlete.
+-A boltok készlete random és az adott bolygó technikaifejlettségétől függ, minnél fejlettebb egy bolygó annál jobb és több a készlete.
+
+-Vannak ritkább és gyakoriabb felszerelések.
 
 -A gps színkodólja a bolygók fejlettségét, legrosszabbtól a legjobbig így: piros, sárga, fehér, zöld, cián.
 
@@ -26,4 +28,4 @@ Amit tudni érdemes a programról, az Elite.docx-ben leírtakon kívül:
 
 -A játékban lehet aktiválni csalókódokat, ha beírjuk azt hogy "/cheats"
 
--Minden egyes bemenetnek van egy "alapfunkciója", amit úgy érünk el, hogy nem írunk be semmi és csak Enter-t nyomunk. Például üzemanyag és áru vételnél ez az, hogy annyi veszünk amennyit csak tudunk.
+-Minden egyes bemenetnek van egy "alapfunkciója", amit úgy érünk el, hogy nem írunk be semmi és csak Enter-t nyomunk. Például üzemanyag és áru vételnél ez az, hogy annyit veszünk amennyit csak tudunk.

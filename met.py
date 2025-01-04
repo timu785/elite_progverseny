@@ -6,7 +6,7 @@ cheats:bool = False
 
 fuel:int = 2
 max_fuel:int = 2
-credits:float = random.randrange(15, 41)
+credits:float = random.randrange(30, 66)
 goods:int = 0
 max_goods:int = 5
 equipment:str = []
@@ -117,7 +117,7 @@ def travel():
                 days_left -= 1
                 # sikeres utazásnál automatikusan eladjuk az árut
                 sell_goods()
-                # utazás után a boltot újra lehet generálni, mert egy új bolygón vagyunk/a már meglátogatott bolygók készletei frissültek az idő teltével
+                # utazás után a boltot újra lehet generálni, mert egy új bolygón vagyunk/a már meglátogatott bolygó készlete frissült az idő teltével
                 shop_has_been_generated = False
     else:
         print("\n---destination does not exist---\n")
@@ -343,31 +343,26 @@ def generate_shop():
         shop_equipment.append("container")
         shop_equipment_prices.append(3)
 
-    # 4 féle harc felszerelés van ami majd segít minket a harcban
-    # 10%-al növeli az esélyét hogy megnyerjük a harcot
-    if(random.randrange(1, 101) <= tech_map[location]):
+    if(random.randrange(1, 101) <= (tech_map[location] * 4)):
         shop_equipment.append("armor")
         shop_equipment_prices.append(random.randrange(15, 26))
-    # 20%-al növeli az esélyét hogy megnyerjük a harcot
-    if(random.randrange(1, 101) <= tech_map[location]):
+    if(random.randrange(1, 101) <= (tech_map[location] * 3)):
         shop_equipment.append("plasma cannon")
         shop_equipment_prices.append(random.randrange(30, 51))
-    # 30%-al növeli az esélyét hogy megnyerjük a harcot
-    if(random.randrange(1, 101) <= tech_map[location]):
+    if(random.randrange(1, 101) <= (tech_map[location] * 2)):
         shop_equipment.append("advanced missile launcher")
         shop_equipment_prices.append(random.randrange(45, 76))
-    # 40%-al növeli az esélyét hogy megnyerjük a harcot
-    if(random.randrange(1, 101) <= tech_map[location]):
+    if(random.randrange(1, 101) <= (tech_map[location])):
         shop_equipment.append("rechargable alien energy shield")
         shop_equipment_prices.append(random.randrange(60, 101))
 
-    if(random.randrange(1, 101) <= tech_map[location]):
+    if(random.randrange(1, 101) <= (tech_map[location] * 3)):
         shop_equipment.append("small tank")
         shop_equipment_prices.append(3)
-    if(random.randrange(1, 101) <= tech_map[location]):
+    if(random.randrange(1, 101) <= (tech_map[location] * 2)):
         shop_equipment.append("medium tank")
         shop_equipment_prices.append(8)
-    if(random.randrange(1, 101) <= tech_map[location]):
+    if(random.randrange(1, 101) <= (tech_map[location])):
         shop_equipment.append("large tank")
         shop_equipment_prices.append(16)   
 
@@ -433,11 +428,13 @@ def utilize_equipment():
     global max_goods
     global chance_of_winning
     global max_fuel
+    # a dokkoló egység 0-ra állítja a robbanás esélyét
     if("docking unit" in equipment): chance_of_explosion = 0
-    # a tolmácsgép hatása a sell_goods() metódusban látható
+    # ahány konténerünk van, annyiszor 4-el növekszik a max_goods
     if("container" in equipment):
         max_goods = 5 + (4 * equipment.count("container"))
 
+    # 4 féle harci felszerelés van, mindegyik különböző százalékértékkel növeli a sikeres harc esélyét
     chance_of_winning = 0
     if("armor" in equipment): chance_of_winning += 10
     if("plasma cannon" in equipment): chance_of_winning += 20
