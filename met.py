@@ -46,7 +46,7 @@ def status():
     global goods_have_just_been_sold
     utilize_equipment()
     clear_screen()
-    print(">>>>>-------------------------------------- S T A T U S --------------------------------------<<<<<")
+    print(">>>>>------------------------------------------ S T A T U S ------------------------------------------<<<<<")
     if(chance_of_explosion != 0): print(f"change of explosion on landing:  {chance_of_explosion}%")
     print(f"fuel:  {fuel}/{max_fuel}")
     #print(f"location: {map[location]}")
@@ -55,22 +55,23 @@ def status():
     print(f"gps:  {gps()}")
     print(f"available telescopes:  {available_telescopes()}")
     #print(f"avarage tech level:  {tech_map_avarage()}")
-    print("---------------------------------------------------------------------------------------------------")
+    print("-----------------------------------------------------------------------------------------------------------")
+    print(f"credits:  ${round(credits, 3)}", end = "")
     if(goods_have_just_been_sold):
-        print(f"{goods_sold} goods sold for ${credits_gained}\n")
+        print(f"      \033[32m{goods_sold} goods sold for ${credits_gained}\033[0m", end = "")
         goods_have_just_been_sold = False
-    print(f"credits:  ${round(credits, 3)}")
+    print()
     print(f"goods:  {goods}/{max_goods}")
     if(equipment):
         print("equipment:   ", end = "")
         print_equipment()
-    print("---------------------------------------------------------------------------------------------------")
+    print("-----------------------------------------------------------------------------------------------------------")
     print(f"days left: {days_left_colorized()}")
     print(f"chances of winning: {chance_of_winning}%")
-    print("---------------------------------------------------------------------------------------------------")
+    print("-----------------------------------------------------------------------------------------------------------")
     print("possible inputs:  travel, buy, telescope, fight")
     if(cheats): print("cheat:  /fuel, /credits, /planet, /explosion chance, /cheats")
-    print("---------------------------------------------------------------------------------------------------")
+    print("-----------------------------------------------------------------------------------------------------------")
 
 def travel():
     global location
