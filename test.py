@@ -1,7 +1,26 @@
 import met
 import random
 import math
+import time
+import string
 
+met.clear_screen()
+sample_size:int = 10
+for i in range(sample_size):
+    print(f"{i+1:3}    ", end="")
+    word:str = ""
+    for j in range(random.randrange(1,11)):
+        word += random.choice(string.ascii_letters)
+    print(word)
+
+    time.sleep(1)
+
+
+
+
+#input()
+
+'''
 a:float = 5.5
 b:int = 7
 c:int = 9
@@ -11,7 +30,7 @@ print(type(list[1]))
 print(type(list[2]))
 print(list)
 print(int(min(list)))
-
+'''
 
 
 

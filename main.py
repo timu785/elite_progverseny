@@ -1,8 +1,3 @@
-# to do:
-# kommentek tisztítása
-# változók és metódukso tisztítása
-# kód átnázáse és tiszítása
-
 import met
 
 met.status()
@@ -41,5 +36,3 @@ while(True):
         input()
     
     met.status()
-
-    

@@ -3,10 +3,9 @@ import math
 import os
 
 cheats:bool = False
-
 fuel:int = 2
 max_fuel:int = 2
-credits:float = random.randrange(30, 66)
+credits:float = random.randrange(30, 81)
 goods:int = 0
 max_goods:int = 5
 equipment:str = []
@@ -61,7 +60,9 @@ def status():
         print(f"      \033[32m{goods_sold} goods sold for ${credits_gained}\033[0m", end="")
         goods_have_just_been_sold = False
     print()
+
     print(f"goods:  {goods}/{max_goods}")
+
     if(equipment):
         print("equipment:   ", end="")
         print_equipment()
@@ -84,6 +85,7 @@ def travel():
         print("Press Enter to continue.")
         input()
         return 0
+    
     destination:str = str(input("where do you want to travel?: "))
     if(destination == ""):
         return 0
@@ -95,6 +97,7 @@ def travel():
         print("\n---you are already on this planet---\n")
         print("Press Enter to continue.")
         input()
+
     elif(destination in map):
         # az üzemanyaghasználat a helyünk és a célünk különbségének abszolútértéke
         fuelconsumption:int = abs(location-map.index(destination))
@@ -148,6 +151,7 @@ def buy():
     # semmi vásárlása
     if(to_buy == "nothing" or to_buy == ""):
         ...
+    
     # üzemanyag vásárlás
     elif(to_buy == "fuel"):
         while True:
@@ -169,8 +173,7 @@ def buy():
                 input()
                 return 0
         fuel_to_buy:int = user_number
-        # ennek a felépítésnek az előnye: hogy ha a 3 közül BÁRMELYIK teljesül akkor az else ág nem fut le,  és a 3 közül TÖBB IS teljesülhet
-        # ha a 3 feltételt if, elif, elif, else -el csinálom: akkor CSAK AZ UTOLSÓ teljesülésénél nem fut le az else ág,  és a 3 közül CSAK 1 teljesülhet
+        # ennek a felépítésnek az előnye: hogy ha a 3 közül bármelyik teljesül akkor az else ág nem fut le, és a 3 közül több is teljesülhet
         if((fuel_to_buy > credits) or (fuel_to_buy > shop_fuel) or (fuel + fuel_to_buy > max_fuel)):
             if(fuel_to_buy > credits):
                 print("\n---you don't have enough credits---\n")
@@ -184,6 +187,7 @@ def buy():
             credits -= round(fuel_to_buy, 3)
             shop_fuel -= fuel_to_buy
             fuel += fuel_to_buy
+    
     # áru vásárlás
     elif(to_buy == "goods"):
         while True:
@@ -218,9 +222,10 @@ def buy():
             credits -= round(goods_to_buy, 3)
             shop_goods -= goods_to_buy
             goods += goods_to_buy
+    
     # felszerelés vásárlás
     elif(to_buy in shop_equipment):
-        # ebben az if feltételben az alatta lévő 3 if feltétele van VAGY-al összekötve
+        # A vagy B vagy C
         if(
             (shop_equipment_prices[shop_equipment.index(to_buy)] > credits) or
             ((to_buy != "container") and (to_buy != "translation device") and (to_buy in equipment)) or
@@ -230,13 +235,13 @@ def buy():
                 ((to_buy == "small tank") and ("large tank" in equipment))
             )
         ):
-            # ha nincs elég pénzünk
+            # A: HA nincs rá elég pénzünk AKKOR nem vehetjük meg
             if(shop_equipment_prices[shop_equipment.index(to_buy)] > credits):
                 print("\n---you don't have enough credits---\n")
-            # csak konténerből és tolmácsgépből lehet többet venni,  vagyis HA a venni kívánt tárgy nem konténer ÉS nem tolmácsgép ÉS már vettünk belőle, AKKOR nem vehetünk
+            # B: csak konténerből és tolmácsgépből lehet többet venni, vagyis  HA a venni kívánt tárgy nem konténer ÉS nem tolmácsgép ÉS már vettünk belőle, AKKOR nem vehetünk
             if((to_buy != "container") and (to_buy != "translation device") and (to_buy in equipment)):
                 print("\n---you already have this equipment---\n")
-            # ha a venni kívánt tanknál van már egy nagyobb tankunk, akkor nem vehetjük meg
+            # C: HA a venni kívánt tanknál van már egy nagyobb tankunk, AKKOR nem vehetjük meg
             if(
                 ((to_buy == "medium tank") and ("large tank" in equipment)) or
                 ((to_buy == "small tank") and ("medium tank" in equipment)) or
@@ -262,6 +267,7 @@ def telescope():
         print("\n---you have already discovered the final planet---\n")
         print("Press Enter to continue.")
         input()
+
     elif(telescope_map[location] == True):
         inputtext:str = str(input("do you want to use the telescope for $5? (yes/no): "))
         if(inputtext == "yes" or inputtext == ""):
@@ -299,13 +305,14 @@ def fight():
 
 
 
-# a jelenlegi bolygó boltjának tárgyait legenerálja, a technikaifejlettségétől függően
+# a jelenlegi bolygó boltjának készletét legenerálja, a technikaifejlettségétől függően
 def generate_shop():
     global shop_fuel
     global shop_goods
     global shop_equipment
     global shop_equipment_prices
     global shop_has_been_generated
+
     # üzemanyag random generálása 1 és 5 között a technikaifejlettségtől függően
     # ennek köszönhetően, óvatosan kell olyan alacsony technikaifejlettségű bolygóra utazni, ami más bolygóktól messze van, mert ottragadhatunk
     x:float = 15 / 5
@@ -352,7 +359,7 @@ def generate_shop():
     if(random.randrange(1, 101) <= (tech_map[location] * 2)):
         shop_equipment.append("advanced missile launcher")
         shop_equipment_prices.append(random.randrange(45, 76))
-    if(random.randrange(1, 101) <= (tech_map[location])):
+    if(random.randrange(1, 101) <= (tech_map[location] * 1)):
         shop_equipment.append("rechargable alien energy shield")
         shop_equipment_prices.append(random.randrange(60, 101))
 
@@ -362,7 +369,7 @@ def generate_shop():
     if(random.randrange(1, 101) <= (tech_map[location] * 2)):
         shop_equipment.append("medium tank")
         shop_equipment_prices.append(8)
-    if(random.randrange(1, 101) <= (tech_map[location])):
+    if(random.randrange(1, 101) <= (tech_map[location] * 1)):
         shop_equipment.append("large tank")
         shop_equipment_prices.append(16)   
 
@@ -373,27 +380,31 @@ def add_new_planet():
     global map
     global tech_map
     global the_end_has_been_generated
-    VOWELS:str = ['a', 'e', 'i', 'o', 'u']
-    CONSONANTS:str = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
-    # az x-edik bolygó mindig a "The End" lesz.
+
+    # a "The End" mindig az x-edik bolygó lesz
     if(len(map) == (the_end_xth_planet - 1)):
         map.append("The End")
         tech_map.append(16)
         telescope_map.append(False)
         the_end_has_been_generated = True
-    # 40% esélye van, hogy űrt generálunk, ha a "map" utolsó 3 eleme között van bolygó
+
+    # űrt generálunk 40% eséllyel, ha a térkép utolsó 3 eleme között van bolygó
     # ennek köszönhetően, ha generálódik 2 vagy 3 űr egymás után, akkor fejlesztenünk kell az üzemanyagtartályt, hogy át tudjuk utazni ezeket
     elif(random.randrange(1,101) <= 40 and (map[-1] != "___" or map[-2] != "___" or map[-3] != "___")):
-        planet_name:str = "___"
-        map.append(planet_name)
+        map.append("___")
         tech_map.append(0)
         telescope_map.append(False)
+
+    # új bolygó generálása
     else:
         # a bolygó nevének random generálása
+        VOWELS:str = ['a', 'e', 'i', 'o', 'u']
+        CONSONANTS:str = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
         planet_name:str = map[0]
         # ellenőrízzük hogy ne forduljon elő már a "map"-ban, erre kicsi az esély, de elengedhetetlen a játék korrekt működéséhez
         while(planet_name in map):
             planet_name:str = ""
+            # 3 és 6 karakter között, nagybetűvel kezdődik és 80% eséllyel mássalhangzóval, utána felváltva jönnek magánhangzók és mássalhangzók
             for i in range(random.randrange(3, 7)):
                 if(len(planet_name) == 0):
                     if(random.randrange(1, 101) <= 80):
@@ -406,17 +417,19 @@ def add_new_planet():
                     else:
                         planet_name += random.choice(VOWELS)
         map.append(planet_name)
+
         # generáljuk az új bolygó technikaifejlettségét az átlagos technikaifejlettséghez relatívan random
-        # így ahogy generálunk több és több bolygót, egyre magasabb lesz a technikaifejlettségük általában
+        # így ahogy generálunk több és több bolygót, egyre magasabb lesz a technikaifejlettségük álltalában
         min:int = tech_map_avarage() - 6
         max:int = tech_map_avarage() + 10
         temp:int = random.randrange(min, max + 1)
         # nem  while(temp < 1 or 15 < temp)
         # ez a módszer jobb, mivel a nagyobb szám generálásának esélye nagyobb lesz, még akkor is ha a max 15 felé esik
-        # tehát ha "tech_map_avarage()" = 14, akkor nagyobb eséllyel generál 15-öt,  mint 13-at, 12-őt, 11-et, 10-et stb... együtt
+        # tehát ha "tech_map_avarage()" = 14, akkor nagyobb eséllyel generál 15-öt,  mint 13-at, 12-őt, 11-et, 10-et stb...
         if(temp < 1): temp = 1
         if(15 < temp): temp = 15
         tech_map.append(temp)
+
         # ha a technikaifejlettség 15, akkor 50% eséllyel lesz teleszkóp, ha 14 akkor 46%, ha 13 akkor 43%, ha 12 akkor 40%, stb...
         if(random.randrange(1, 101) <= (temp * 3.34)):
             telescope_map.append(True)
@@ -428,9 +441,10 @@ def utilize_equipment():
     global max_goods
     global chance_of_winning
     global max_fuel
+
     # a dokkoló egység 0-ra állítja a robbanás esélyét
     if("docking unit" in equipment): chance_of_explosion = 0
-    # ahány konténerünk van, annyiszor 4-el növekszik a max_goods
+    # ahány konténerünk van, annyiszor 4-el növekszik a szállítható áru
     if("container" in equipment):
         max_goods = 5 + (4 * equipment.count("container"))
 
@@ -465,6 +479,7 @@ def gps():
         string += temp + " "
     return string
 
+# visszatér színkódolva azoknak a bolygóknak a nevével, ahol van teleszkóp
 def available_telescopes():
     string:str = ""
     temp:str
@@ -489,9 +504,9 @@ def sell_goods():
         ...
     elif(0 < goods):
         goods_sold = goods
-        # minnél több konténerünk van, annál több a profit árueladáskor
+        # minnél több tolmácsgépünk van, annál több a profit árueladáskor
         # a profit mennyisége eltérő mint a feladatleírásban, hogy gyorsabb legyen a játék, de a képlet ugyanaz
-        # [-10; +50]% árrés  és egy tolmácsgép +15%-al növeli
+        # [-10; +50]%  árrés és egy tolmácsgép +15%-al  növeli
         #credits_gained = round(goods_sold * random.randrange(90 + (15 * equipment.count("translation device")), 151 + (15 * equipment.count("translation device"))) * 0.01, 3)
         # [-10; +100]% árrés és egy tolmácsgép +100%-al növeli
         credits_gained = round(goods_sold * random.randrange(90 + (100 * equipment.count("translation device")), 201 + (100 * equipment.count("translation device"))) * 0.01, 3)
@@ -505,6 +520,7 @@ def set_chance_of_explosion():
     if(user_input == ""):
         chance_of_explosion = 0
     else:
+        # a try except szerkezet szükséges, hogy szöveg bemenetnél ne legyen hiba, és ne záródjon be a program
         try:
             user_number = int(user_input)
             if(user_number < 0 or 100 < user_number):
@@ -546,7 +562,6 @@ def set_credits():
     if(user_input == ""):
         credits = 1000
     else:
-        # a try except szerkezet szükséges, hogy szöveg bemenetnél ne legyen hiba, és vesszen el a haladás
         try:
             user_number = int(user_input)
             if(user_number < 0):
@@ -569,7 +584,7 @@ def print_equipment():
             print(f"\033[35m{equipment[i]}\033[0m   ", end="")
         else:
             print(f"{equipment[i]}   ", end="")
-        # akkor rakunk sortörést és behúzást, ha [4 vagy többszöröse] db elemnél járunk VISZONT ennél öszzesen több elem van
+        # AKKOR rakunk sortörést és behúzást, HA [4 vagy többszöröse] db elemnél járunk ÉS ennél öszzesen több elem van(vagyis nem az az utolsó elem)
         # ezzel azt kerüljük el, hogy egy üres sor legyen, amikor pontosan [4 vagy többszöröse] db elem van
         if((i+1) in [4, 8, 12, 16, 20, 24, 28, 32] and (i+1) < len(equipment)): print(f"\n             ", end="")
     print()
@@ -598,8 +613,7 @@ def tech_map_avarage():
     return math.ceil(sum(filtered_list) / len(filtered_list))
 
 def clear_screen():
-    # Check the operating system
-    if os.name == 'nt':  # For Windows
+    if os.name == 'nt':
         os.system('cls')
-    else:  # For MacOS and Linux
+    else:
         os.system('clear')
